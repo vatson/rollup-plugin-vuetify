@@ -23,9 +23,11 @@ const load = async id => {
 
   if (component.template) {
     if (component.template.src) {
-      template = (await readFile(
-        path.resolve(path.dirname(filename), component.template.src)
-      )).toString("utf8");
+      template = (
+        await readFile(
+          path.resolve(path.dirname(filename), component.template.src),
+        )
+      ).toString("utf8");
     } else {
       template = component.template.content;
     }

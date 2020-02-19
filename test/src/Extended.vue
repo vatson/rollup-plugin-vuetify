@@ -1,18 +1,14 @@
 <template>
-  <div>{{message}}</div>
+  <v-container>{{message}}</v-container>
 </template>
 
 <script lang="ts">
 import Vue, { VueConstructor } from 'vue';
 
-type a = {
-  b: String;
-};
-
 export default Vue.extend({
   data() {
     return {
-      style: { color: 'red' },
+      message: 'Hello!',
     };
   },
 });

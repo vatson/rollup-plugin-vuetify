@@ -1,13 +1,13 @@
 const {
   directives: vuetifyDirectives,
-  components: vuetifyComponents
+  components: vuetifyComponents,
 } = require("vuetify-loader/lib/matcher/generator");
 const { hyphenate, capitalize, camelize } = require("vuetify-loader/lib/util");
 
 const normalize = items =>
   items.map(item => ({
     kebab: hyphenate(item),
-    camel: capitalize(camelize(item))
+    camel: capitalize(camelize(item)),
   }));
 
 const getDirectives = attrs => {
@@ -20,12 +20,12 @@ const getComponents = tags => {
   return normalize(tags)
     .filter(
       ({ kebab, camel }) =>
-        kebab.startsWith("v-") && vuetifyComponents.has(camel)
+        kebab.startsWith("v-") && vuetifyComponents.has(camel),
     )
     .map(({ camel }) => camel);
 };
 
 module.exports = {
   getDirectives,
-  getComponents
+  getComponents,
 };
