@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-vuetify",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A-la-carte (treeshaking) for you vuetify",
   "main": "src/plugin.js",
   "scripts": {
