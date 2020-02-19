@@ -31,28 +31,38 @@ const injectImports = (importTarget, imports = []) => {
 };
 
 const getDecorator = ast => {
-  return ast
-    .find(j.AssignmentExpression, {
-      left: {
-        type: "Identifier",
-        name: "default_1",
-      },
-      right: {
-        type: "CallExpression",
-        callee: {
-          property: {
-            type: "Identifier",
-            name: "__decorate",
-          },
+  const assignment = ast.find(j.AssignmentExpression, {
+    left: {
+      type: "Identifier",
+      name: "default_1",
+    },
+    right: {
+      type: "CallExpression",
+      callee: {
+        property: {
+          type: "Identifier",
+          name: "__decorate",
         },
       },
-    })
-    .find(j.CallExpression, {
-      callee: {
-        type: "Identifier",
-        name: "Component",
-      },
-    });
+    },
+  });
+
+  const call = assignment.find(j.CallExpression, {
+    callee: {
+      type: "Identifier",
+      name: "Component",
+    },
+  });
+
+  if (call.length) return call;
+
+  assignment
+    .find(j.Identifier, { name: "Component" })
+    .replaceWith(_ =>
+      j.callExpression(j.identifier("Component"), [j.objectExpression([])]),
+    );
+
+  return assignment;
 };
 
 const findUseTarget = (ast, target) => {
@@ -70,10 +80,7 @@ const findUseTarget = (ast, target) => {
     j.objectExpression([]),
   );
 
-  objTarget
-    .find(j.Property)
-    .at(0)
-    .insertBefore(newProperty);
+  objTarget.get("properties").value.unshift(newProperty);
 
   return objTarget;
 };

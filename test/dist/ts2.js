@@ -1,17 +1,26 @@
-import { VContainer, Scroll, VIcon, VFlex, VBtn, Ripple } from 'vuetify/lib';
+import { Scroll, VContainer, VFlex, VIcon, VBtn, Ripple } from 'vuetify/lib';
 import Vue from 'vue';
 
-var script = Vue.extend({
-    components: {
-        VContainer: VContainer
-    },
+//
 
-    data: function () {
-        return {
-            style: { color: 'red' },
-        };
-    }
-});
+var script = {
+  directives: {
+    Scroll: Scroll
+  },
+
+  name: 'SimpleComponent',
+
+  components: {
+    VContainer,
+    Flex: VFlex,
+    VIcon: VIcon,
+    VFlex: VFlex
+  },
+
+  props: {
+    icon: { type: String, default: 'close' },
+  }
+};
 
 function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
 /* server only */
@@ -106,7 +115,21 @@ var __vue_render__ = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("v-container", [_vm._v(_vm._s(_vm.message))])
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-flex",
+        {
+          directives: [{ name: "scroll", rawName: "v-scroll" }],
+          attrs: { xs12: "" }
+        },
+        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
+        1
+      )
+    ],
+    1
+  )
 };
 var __vue_staticRenderFns__ = [];
 __vue_render__._withStripped = true;
@@ -125,215 +148,13 @@ __vue_render__._withStripped = true;
   
 
   
-  var Extended = normalizeComponent_1(
+  var Complex = normalizeComponent_1(
     { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
     __vue_inject_styles__,
     __vue_script__,
     __vue_scope_id__,
     __vue_is_functional_template__,
     __vue_module_identifier__,
-    undefined,
-    undefined
-  );
-
-//
-//
-//
-//
-//
-//
-//
-//
-
-var script$1 = {
-  directives: {
-    Scroll: Scroll
-  },
-
-  components: {
-    VIcon: VIcon,
-    VFlex: VFlex,
-    VContainer: VContainer
-  },
-
-  name: 'SimpleComponent',
-
-  props: {
-    icon: { type: String, default: 'close' },
-  }
-};
-
-/* script */
-const __vue_script__$1 = script$1;
-
-/* template */
-var __vue_render__$1 = function() {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
-    ],
-    1
-  )
-};
-var __vue_staticRenderFns__$1 = [];
-__vue_render__$1._withStripped = true;
-
-  /* style */
-  const __vue_inject_styles__$1 = undefined;
-  /* scoped */
-  const __vue_scope_id__$1 = undefined;
-  /* module identifier */
-  const __vue_module_identifier__$1 = undefined;
-  /* functional template */
-  const __vue_is_functional_template__$1 = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-
-  
-  var Simple = normalizeComponent_1(
-    { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
-    __vue_inject_styles__$1,
-    __vue_script__$1,
-    __vue_scope_id__$1,
-    __vue_is_functional_template__$1,
-    __vue_module_identifier__$1,
-    undefined,
-    undefined
-  );
-
-var script$2 = {
-  components: {
-    VBtn: VBtn
-  },
-
-  name: "ExternalComponent",
-
-  props: {
-    icon: { type: String, default: "it's external component!" },
-  }
-};
-
-/* script */
-const __vue_script__$2 = script$2;
-
-/* template */
-var __vue_render__$2 = function() {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c("div", [_c("v-btn", [_vm._v("wtf " + _vm._s(_vm.icon))])], 1)
-};
-var __vue_staticRenderFns__$2 = [];
-__vue_render__$2._withStripped = true;
-
-  /* style */
-  const __vue_inject_styles__$2 = undefined;
-  /* scoped */
-  const __vue_scope_id__$2 = undefined;
-  /* module identifier */
-  const __vue_module_identifier__$2 = undefined;
-  /* functional template */
-  const __vue_is_functional_template__$2 = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-
-  
-  var Component = normalizeComponent_1(
-    { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
-    __vue_inject_styles__$2,
-    __vue_script__$2,
-    __vue_scope_id__$2,
-    __vue_is_functional_template__$2,
-    __vue_module_identifier__$2,
-    undefined,
-    undefined
-  );
-
-//
-
-var script$3 = {
-  directives: {
-    Scroll: Scroll
-  },
-
-  name: 'SimpleComponent',
-
-  components: {
-    VContainer,
-    Flex: VFlex,
-    VIcon: VIcon,
-    VFlex: VFlex
-  },
-
-  props: {
-    icon: { type: String, default: 'close' },
-  }
-};
-
-/* script */
-const __vue_script__$3 = script$3;
-
-/* template */
-var __vue_render__$3 = function() {
-  var _vm = this;
-  var _h = _vm.$createElement;
-  var _c = _vm._self._c || _h;
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
-    ],
-    1
-  )
-};
-var __vue_staticRenderFns__$3 = [];
-__vue_render__$3._withStripped = true;
-
-  /* style */
-  const __vue_inject_styles__$3 = undefined;
-  /* scoped */
-  const __vue_scope_id__$3 = undefined;
-  /* module identifier */
-  const __vue_module_identifier__$3 = undefined;
-  /* functional template */
-  const __vue_is_functional_template__$3 = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-
-  
-  var Complex = normalizeComponent_1(
-    { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
-    __vue_inject_styles__$3,
-    __vue_script__$3,
-    __vue_scope_id__$3,
-    __vue_is_functional_template__$3,
-    __vue_module_identifier__$3,
     undefined,
     undefined
   );
@@ -624,7 +445,7 @@ function forwardStaticMembers(Extended, Original, Super) {
     });
 }
 
-function Component$1(options) {
+function Component(options) {
     if (typeof options === 'function') {
         return componentFactory(options);
     }
@@ -632,7 +453,7 @@ function Component$1(options) {
         return componentFactory(Component, options);
     };
 }
-Component$1.registerHooks = function registerHooks(keys) {
+Component.registerHooks = function registerHooks(keys) {
     $internalHooks.push.apply($internalHooks, keys);
 };
 
@@ -674,27 +495,25 @@ var default_1 = /** @class */ (function (_super) {
         Prop(Boolean)
     ], default_1.prototype, "message", void 0);
     default_1 = __decorate([
-        Component$1({
+        Component({
             components: {
                 VBtn: VBtn,
                 VFlex: VFlex
             },
-
-            // components: { VBtn },
             directives: {
-                A: function () { },
+                MyCustomDirective: function () { },
                 Ripple: Ripple
-            }
+            },
         })
     ], default_1);
     return default_1;
 }(Vue));
 
 /* script */
-const __vue_script__$4 = default_1;
+const __vue_script__$1 = default_1;
 
 /* template */
-var __vue_render__$4 = function() {
+var __vue_render__$1 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
@@ -706,7 +525,7 @@ var __vue_render__$4 = function() {
         {
           directives: [
             { name: "ripple", rawName: "v-ripple" },
-            { name: "a", rawName: "v-a" }
+            { name: "my-custom-directive", rawName: "v-my-custom-directive" }
           ]
         },
         [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _c("v-btn")],
@@ -715,6 +534,207 @@ var __vue_render__$4 = function() {
     ],
     1
   )
+};
+var __vue_staticRenderFns__$1 = [];
+__vue_render__$1._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$1 = undefined;
+  /* scoped */
+  const __vue_scope_id__$1 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$1 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$1 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var Decorated = normalizeComponent_1(
+    { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
+    __vue_inject_styles__$1,
+    __vue_script__$1,
+    __vue_scope_id__$1,
+    __vue_is_functional_template__$1,
+    __vue_module_identifier__$1,
+    undefined,
+    undefined
+  );
+
+//
+//
+//
+//
+//
+//
+//
+//
+
+var script$1 = {
+  directives: {
+    Scroll: Scroll
+  },
+
+  components: {
+    VFlex: VFlex,
+    VContainer: VContainer
+  }
+};
+
+/* script */
+const __vue_script__$2 = script$1;
+
+/* template */
+var __vue_render__$2 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-flex",
+        {
+          directives: [{ name: "scroll", rawName: "v-scroll" }],
+          attrs: { xs12: "" }
+        },
+        [_vm._t("default")],
+        2
+      )
+    ],
+    1
+  )
+};
+var __vue_staticRenderFns__$2 = [];
+__vue_render__$2._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$2 = undefined;
+  /* scoped */
+  const __vue_scope_id__$2 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$2 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$2 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var Empty = normalizeComponent_1(
+    { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
+    __vue_inject_styles__$2,
+    __vue_script__$2,
+    __vue_scope_id__$2,
+    __vue_is_functional_template__$2,
+    __vue_module_identifier__$2,
+    undefined,
+    undefined
+  );
+
+var default_1$1 = /** @class */ (function (_super) {
+    __extends(default_1, _super);
+    function default_1() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.message = 'Hello!';
+        return _this;
+    }
+    __decorate([
+        Prop(Boolean)
+    ], default_1.prototype, "message", void 0);
+    default_1 = __decorate([
+        Component({
+            directives: {
+                Ripple: Ripple
+            },
+
+            components: {
+                VBtn: VBtn,
+                VFlex: VFlex
+            }
+        })
+    ], default_1);
+    return default_1;
+}(Vue));
+
+/* script */
+const __vue_script__$3 = default_1$1;
+
+/* template */
+var __vue_render__$3 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "div",
+    [
+      _c(
+        "v-flex",
+        {
+          directives: [
+            { name: "ripple", rawName: "v-ripple" },
+            { name: "my-custom-directive", rawName: "v-my-custom-directive" }
+          ]
+        },
+        [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _c("v-btn")],
+        1
+      )
+    ],
+    1
+  )
+};
+var __vue_staticRenderFns__$3 = [];
+__vue_render__$3._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$3 = undefined;
+  /* scoped */
+  const __vue_scope_id__$3 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$3 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$3 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var EmptyDecorator = normalizeComponent_1(
+    { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
+    __vue_inject_styles__$3,
+    __vue_script__$3,
+    __vue_scope_id__$3,
+    __vue_is_functional_template__$3,
+    __vue_module_identifier__$3,
+    undefined,
+    undefined
+  );
+
+var script$2 = Vue.extend({
+    components: {
+        VContainer: VContainer
+    },
+
+    data: function () {
+        return {
+            message: 'Hello!',
+        };
+    }
+});
+
+/* script */
+const __vue_script__$4 = script$2;
+
+/* template */
+var __vue_render__$4 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("v-container", [_vm._v(_vm._s(_vm.message))])
 };
 var __vue_staticRenderFns__$4 = [];
 __vue_render__$4._withStripped = true;
@@ -733,7 +753,7 @@ __vue_render__$4._withStripped = true;
   
 
   
-  var Decorated = normalizeComponent_1(
+  var Extended = normalizeComponent_1(
     { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
     __vue_inject_styles__$4,
     __vue_script__$4,
@@ -744,4 +764,133 @@ __vue_render__$4._withStripped = true;
     undefined
   );
 
-export { Complex, Decorated, Extended, Component as External, Simple };
+var script$3 = {
+  components: {
+    VBtn: VBtn
+  },
+
+  name: "ExternalComponent",
+
+  props: {
+    text: { type: String, default: "it's external component!" },
+  }
+};
+
+/* script */
+const __vue_script__$5 = script$3;
+
+/* template */
+var __vue_render__$5 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("div", [_c("v-btn", [_vm._v(_vm._s(_vm.text))])], 1)
+};
+var __vue_staticRenderFns__$5 = [];
+__vue_render__$5._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$5 = undefined;
+  /* scoped */
+  const __vue_scope_id__$5 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$5 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$5 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var Component$1 = normalizeComponent_1(
+    { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
+    __vue_inject_styles__$5,
+    __vue_script__$5,
+    __vue_scope_id__$5,
+    __vue_is_functional_template__$5,
+    __vue_module_identifier__$5,
+    undefined,
+    undefined
+  );
+
+//
+//
+//
+//
+//
+//
+//
+//
+
+var script$4 = {
+  directives: {
+    Scroll: Scroll
+  },
+
+  components: {
+    VIcon: VIcon,
+    VFlex: VFlex,
+    VContainer: VContainer
+  },
+
+  name: 'SimpleComponent',
+
+  props: {
+    icon: { type: String, default: 'close' },
+  }
+};
+
+/* script */
+const __vue_script__$6 = script$4;
+
+/* template */
+var __vue_render__$6 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-flex",
+        {
+          directives: [{ name: "scroll", rawName: "v-scroll" }],
+          attrs: { xs12: "" }
+        },
+        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
+        1
+      )
+    ],
+    1
+  )
+};
+var __vue_staticRenderFns__$6 = [];
+__vue_render__$6._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$6 = undefined;
+  /* scoped */
+  const __vue_scope_id__$6 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$6 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$6 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+
+  
+  var Simple = normalizeComponent_1(
+    { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
+    __vue_inject_styles__$6,
+    __vue_script__$6,
+    __vue_scope_id__$6,
+    __vue_is_functional_template__$6,
+    __vue_module_identifier__$6,
+    undefined,
+    undefined
+  );
+
+export { Complex, Decorated, Empty, EmptyDecorator, Extended, Component$1 as External, Simple };
