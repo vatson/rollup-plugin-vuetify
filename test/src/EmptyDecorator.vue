@@ -9,13 +9,9 @@
 
 <script lang="ts">
 import vue from 'vue';
-import { VBtn } from 'vuetify/lib';
 import { Prop, Component } from 'vue-property-decorator';
 
-@Component({
-  components: { VBtn },
-  directives: { MyCustomDirective() {} },
-})
+@Component
 export default class extends vue {
   @Prop(Boolean)
   public message: string = 'Hello!';

@@ -26,15 +26,15 @@ const vuetify = require("rollup-plugin-vuetify");
 
 const build = async () => {
   try {
-    const bundleTs = await rollup({
+    const bundle = await rollup({
       input: "src/index.js",
       external: ["vue", "vuetify/lib"],
       plugins: [postcss(), vue(), vuetify()],
     });
 
-    bundleTs.write({
+    bundle.write({
       format: "esm",
-      file: resolve(__dirname, "dist/bundle.js"),
+      file: "dist/bundle.js",
     });
   } catch (e) {
     console.error(e);
@@ -58,7 +58,9 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 ├── rollup.js                    <- rollup configuration
 ├── src
 │   ├── Complex.vue              <- component with partial manual import
-│   ├── Decorated.vue            <- component decorated with vue-class-component
+│   ├── Decorated.vue            <- component decorated with vue-property-component
+│   ├── Empty.vue                <- component without any properties, can be used as a wrapper
+│   ├── EmptyDecorator.vue       <- component with "empty" decorator
 │   ├── Extended.vue             <- component created with Vue.extend()
 │   ├── External                 <- component splitted into separate files
 │   │   ├── Component.vue
@@ -72,7 +74,7 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 
 ## Supported Feartures
 
-- Typescript >2.x and vue-property-decorator ([docs](https://class-component.vuejs.org/));
+- Typescript >2.x and vue-property-decorator ([docs](https://github.com/kaorun343/vue-property-decorator#readme));
 - Components created with Vue.extend() ([docs](https://ru.vuejs.org/v2/api/#Vue-extend));
 - Components separated on the external files ([docs](https://vuejs.org/v2/guide/single-file-components.html#What-About-Separation-of-Concerns), [example](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/src/External));
 - Autoloading of **Vuetify 1.x** and **2.x** components;
