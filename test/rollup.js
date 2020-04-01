@@ -3,7 +3,7 @@
 const { resolve } = require("path");
 const { rollup } = require("rollup");
 const vue = require("rollup-plugin-vue");
-const commonjs = require("rollup-plugin-commonjs");
+const commonjs = require("@rollup/plugin-commonjs");
 
 const resolveNode = require("@rollup/plugin-node-resolve");
 const typescript = require("@rollup/plugin-typescript");
