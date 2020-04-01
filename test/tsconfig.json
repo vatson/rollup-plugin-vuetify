@@ -1,12 +1,15 @@
 {
-  "include": ["./src/**/*", "./src/index.js", "./src/External"],
-  "exclude": ["../node_modules"],
+  "include": ["./src/**/*"],
+  "exclude": ["../node_modules", "dist"],
   "compilerOptions": {
+    "outDir": "",
     "target": "es5",
     "module": "es2015",
     "strict": true,
     "types": ["vuetify"],
+    "moduleResolution": "node",
     "allowJs": true,
+    "checkJs": true,
     "esModuleInterop": true,
     "experimentalDecorators": true
   }
