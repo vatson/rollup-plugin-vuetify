@@ -962,4 +962,69 @@ __vue_render__$6._withStripped = true;
     undefined
   );
 
-export { __vue_component__ as Complex, __vue_component__$1 as Decorated, __vue_component__$2 as Empty, __vue_component__$3 as EmptyDecorator, __vue_component__$4 as Extended, __vue_component__$5 as External, __vue_component__$6 as Simple };
+/* script */
+
+/* template */
+var __vue_render__$7 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-flex",
+        {
+          directives: [{ name: "scroll", rawName: "v-scroll" }],
+          attrs: { xs12: "" }
+        },
+        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
+        1
+      )
+    ],
+    1
+  )
+};
+var __vue_staticRenderFns__$7 = [];
+__vue_render__$7._withStripped = true;
+
+/* style */
+const __vue_inject_styles__$7 = undefined;
+/* scoped */
+const __vue_scope_id__$7 = undefined;
+/* module identifier */
+const __vue_module_identifier__$7 = undefined;
+/* functional template */
+const __vue_is_functional_template__$7 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+
+
+const __vue_component__$7 = normalizeComponent(
+  { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
+  __vue_inject_styles__$7,
+  {
+    directives: {
+      Scroll: Scroll
+    },
+
+    components: {
+      VIcon: VIcon,
+      VFlex: VFlex,
+      VContainer: VContainer
+    }
+  },
+  __vue_scope_id__$7,
+  __vue_is_functional_template__$7,
+  __vue_module_identifier__$7,
+  false,
+  undefined,
+  undefined,
+  undefined
+);
+
+export { __vue_component__ as Complex, __vue_component__$1 as Decorated, __vue_component__$2 as Empty, __vue_component__$3 as EmptyDecorator, __vue_component__$4 as Extended, __vue_component__$5 as External, __vue_component__$6 as Simple, __vue_component__$7 as WithoutScript };

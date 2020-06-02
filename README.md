@@ -67,8 +67,9 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 │   │   ├── index.js
 │   │   ├── script.js
 │   │   └── template.html
+│   ├── index.js
 │   ├── Simple.vue               <- simple generic component
-│   └── index.js
+│   └── WithoutScript.vue        <- component without `script` section, best choice for template chunks
 └── tsconfig.json
 ```
 
@@ -82,7 +83,7 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 
 ## Known Caveats
 
-- Plugin doesn't allow overwriting the built-in vuetify components with your own (knows as [Custom Dynamic imports](https://vuetifyjs.com/ru/customization/a-la-carte#custom-dynamic-imports));
+- Plugin doesn't allow overwriting the built-in vuetify components with your own (known as [Custom Dynamic imports](https://vuetifyjs.com/ru/customization/a-la-carte#custom-dynamic-imports));
 - All known limitations of the original vuetify-loader (see more here [https://vuetifyjs.com/ru/customization/a-la-carte#limitations](https://vuetifyjs.com/ru/customization/a-la-carte#limitations));
 
 ## Under The Hood

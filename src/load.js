@@ -18,6 +18,7 @@ const load = async id => {
   const content = (await readFile(filename)).toString("utf8");
 
   const component = parseComponent(content);
+  const script = component.script && component.script.content;
 
   let template, isExternalScript, scriptPath;
 
@@ -32,13 +33,13 @@ const load = async id => {
       template = component.template.content;
     }
 
-    if (component.script.src) {
+    if (component.script && component.script.src) {
       scriptPath = path.resolve(path.dirname(filename), component.script.src);
       isExternalScript = true;
     }
   }
 
-  return { template, scriptPath, isExternalScript };
+  return { template, script, scriptPath, isExternalScript };
 };
 
 module.exports = load;
