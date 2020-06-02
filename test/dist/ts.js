@@ -819,6 +819,59 @@ var script$5 = {
   }
 };
 
+const isOldIE = typeof navigator !== 'undefined' &&
+    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+function createInjector(context) {
+    return (id, style) => addStyle(id, style);
+}
+let HEAD;
+const styles = {};
+function addStyle(id, css) {
+    const group = isOldIE ? css.media || 'default' : id;
+    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
+    if (!style.ids.has(id)) {
+        style.ids.add(id);
+        let code = css.source;
+        if (css.map) {
+            // https://developer.chrome.com/devtools/docs/javascript-debugging
+            // this makes source maps inside style tags work properly in Chrome
+            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
+            // http://stackoverflow.com/a/26603875
+            code +=
+                '\n/*# sourceMappingURL=data:application/json;base64,' +
+                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
+                    ' */';
+        }
+        if (!style.element) {
+            style.element = document.createElement('style');
+            style.element.type = 'text/css';
+            if (css.media)
+                style.element.setAttribute('media', css.media);
+            if (HEAD === undefined) {
+                HEAD = document.head || document.getElementsByTagName('head')[0];
+            }
+            HEAD.appendChild(style.element);
+        }
+        if ('styleSheet' in style.element) {
+            style.styles.push(code);
+            style.element.styleSheet.cssText = style.styles
+                .filter(Boolean)
+                .join('\n');
+        }
+        else {
+            const index = style.ids.size - 1;
+            const textNode = document.createTextNode(code);
+            const nodes = style.element.childNodes;
+            if (nodes[index])
+                style.element.removeChild(nodes[index]);
+            if (nodes.length)
+                style.element.insertBefore(textNode, nodes[index]);
+            else
+                style.element.appendChild(textNode);
+        }
+    }
+}
+
 /* script */
 const __vue_script__$5 = script$5;
 
@@ -833,15 +886,17 @@ var __vue_staticRenderFns__$5 = [];
 __vue_render__$5._withStripped = true;
 
   /* style */
-  const __vue_inject_styles__$5 = undefined;
+  const __vue_inject_styles__$5 = function (inject) {
+    if (!inject) return
+    inject("data-v-78c4fa56_0", { source: "body {\n  font-size: 1rem;\n}", map: undefined, media: undefined });
+
+  };
   /* scoped */
   const __vue_scope_id__$5 = undefined;
   /* module identifier */
   const __vue_module_identifier__$5 = undefined;
   /* functional template */
   const __vue_is_functional_template__$5 = false;
-  /* style inject */
-  
   /* style inject SSR */
   
   /* style inject shadow dom */
@@ -856,7 +911,7 @@ __vue_render__$5._withStripped = true;
     __vue_is_functional_template__$5,
     __vue_module_identifier__$5,
     false,
-    undefined,
+    createInjector,
     undefined,
     undefined
   );
@@ -944,7 +999,20 @@ __vue_render__$6._withStripped = true;
     undefined
   );
 
+var script$7 = {
+  directives: {
+    Scroll: Scroll
+  },
+
+  components: {
+    VIcon: VIcon,
+    VFlex: VFlex,
+    VContainer: VContainer
+  }
+};
+
 /* script */
+const __vue_script__$7 = script$7;
 
 /* template */
 var __vue_render__$7 = function() {
@@ -970,14 +1038,69 @@ var __vue_render__$7 = function() {
 var __vue_staticRenderFns__$7 = [];
 __vue_render__$7._withStripped = true;
 
+  /* style */
+  const __vue_inject_styles__$7 = undefined;
+  /* scoped */
+  const __vue_scope_id__$7 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$7 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$7 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+  /* style inject shadow dom */
+  
+
+  
+  const __vue_component__$7 = normalizeComponent(
+    { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
+    __vue_inject_styles__$7,
+    __vue_script__$7,
+    __vue_scope_id__$7,
+    __vue_is_functional_template__$7,
+    __vue_module_identifier__$7,
+    false,
+    undefined,
+    undefined,
+    undefined
+  );
+
+/* script */
+
+/* template */
+var __vue_render__$8 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "v-container",
+    [
+      _c(
+        "v-flex",
+        {
+          directives: [{ name: "scroll", rawName: "v-scroll" }],
+          attrs: { xs12: "" }
+        },
+        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
+        1
+      )
+    ],
+    1
+  )
+};
+var __vue_staticRenderFns__$8 = [];
+__vue_render__$8._withStripped = true;
+
 /* style */
-const __vue_inject_styles__$7 = undefined;
+const __vue_inject_styles__$8 = undefined;
 /* scoped */
-const __vue_scope_id__$7 = undefined;
+const __vue_scope_id__$8 = undefined;
 /* module identifier */
-const __vue_module_identifier__$7 = undefined;
+const __vue_module_identifier__$8 = undefined;
 /* functional template */
-const __vue_is_functional_template__$7 = false;
+const __vue_is_functional_template__$8 = false;
 /* style inject */
 
 /* style inject SSR */
@@ -986,9 +1109,9 @@ const __vue_is_functional_template__$7 = false;
 
 
 
-const __vue_component__$7 = normalizeComponent(
-  { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
-  __vue_inject_styles__$7,
+const __vue_component__$8 = normalizeComponent(
+  { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
+  __vue_inject_styles__$8,
   {
     directives: {
       Scroll: Scroll
@@ -1000,13 +1123,13 @@ const __vue_component__$7 = normalizeComponent(
       VContainer: VContainer
     }
   },
-  __vue_scope_id__$7,
-  __vue_is_functional_template__$7,
-  __vue_module_identifier__$7,
+  __vue_scope_id__$8,
+  __vue_is_functional_template__$8,
+  __vue_module_identifier__$8,
   false,
   undefined,
   undefined,
   undefined
 );
 
-export { __vue_component__ as Complex, __vue_component__$1 as Decorated, __vue_component__$2 as Empty, __vue_component__$3 as EmptyDecorator, __vue_component__$4 as Extended, __vue_component__$5 as External, __vue_component__$6 as Simple, __vue_component__$7 as WithoutScript };
+export { __vue_component__ as Complex, __vue_component__$1 as Decorated, __vue_component__$2 as Empty, __vue_component__$3 as EmptyDecorator, __vue_component__$4 as Extended, __vue_component__$5 as External, __vue_component__$6 as Simple, __vue_component__$7 as WithEmptyScript, __vue_component__$8 as WithoutScript };
