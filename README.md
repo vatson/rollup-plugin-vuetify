@@ -61,6 +61,7 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 │   ├── Decorated.vue            <- component decorated with vue-property-component
 │   ├── Empty.vue                <- component without any properties, can be used as a wrapper
 │   ├── EmptyDecorator.vue       <- component with "empty" decorator
+│   ├── ExportByReference.vue    <- component with export defined previously as a variable
 │   ├── Extended.vue             <- component created with Vue.extend()
 │   ├── External                 <- component splitted into separate files
 │   │   ├── Component.vue
@@ -69,6 +70,7 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 │   │   └── template.html
 │   ├── index.js
 │   ├── Simple.vue               <- simple generic component
+│   ├── WithEmptyScript.vue      <- component with empty `script` section
 │   └── WithoutScript.vue        <- component without `script` section, best choice for template chunks
 └── tsconfig.json
 ```
@@ -85,6 +87,7 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 
 - Plugin doesn't allow overwriting the built-in vuetify components with your own (known as [Custom Dynamic imports](https://vuetifyjs.com/ru/customization/a-la-carte#custom-dynamic-imports));
 - All known limitations of the original vuetify-loader (see more here [https://vuetifyjs.com/ru/customization/a-la-carte#limitations](https://vuetifyjs.com/ru/customization/a-la-carte#limitations));
+- Plugin doesn't support the re-exported components from `script` section;
 
 ## Under The Hood
 
