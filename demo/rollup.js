@@ -4,6 +4,7 @@ const { resolve } = require("path");
 const { rollup } = require("rollup");
 const vue = require("rollup-plugin-vue");
 const commonjs = require("@rollup/plugin-commonjs");
+const replace = require("@rollup/plugin-replace");
 
 const resolveNode = require("@rollup/plugin-node-resolve");
 const typescript = require("@rollup/plugin-typescript");
@@ -50,6 +51,32 @@ const build = async () => {
     });
 
     bundleTs2.write({ format: "esm", file: resolve(__dirname, "dist/ts2.js") });
+
+    const browser = await rollup({
+      input: resolve(__dirname, "src/main.js"),
+      external: ["vue"],
+      plugins: [
+        resolveNode(),
+        commonjs(),
+        postcss(),
+        replace({
+          'process.env.NODE_ENV': JSON.stringify('production'),
+        }),
+        vue(),
+        typescript2({
+          objectHashIgnoreUnknownHack: true,
+          tsconfig: resolve(__dirname, "tsconfig.json"),
+        }),
+        plugin(),
+      ],
+    });
+
+    browser.write({
+      format: "umd",
+      globals: { vue: "Vue" },
+      name: "RollupVuetify",
+      file: resolve(__dirname, "dist/browser.js"),
+    });
   } catch (e) {
     console.log(e);
   }

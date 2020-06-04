@@ -1,9 +1,5 @@
 <template>
-  <v-container>
-    <v-flex xs12 v-scroll>
-      <v-icon>{{icon}}</v-icon>
-    </v-flex>
-  </v-container>
+  <v-chip>Chip used by the component exported by ref</v-chip>
 </template>
 
 <script>
@@ -11,9 +7,6 @@ import Vue from 'vue';
 
 const ExportByReference = Vue.extend({
   name: 'ExportByReference',
-  props: {
-    icon: { type: String, default: 'close' },
-  },
 });
 
 export default ExportByReference;

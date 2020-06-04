@@ -1,4 +1,4 @@
-import { Scroll, VContainer, VFlex, VIcon, VBtn, Ripple } from 'vuetify/lib';
+import { Scroll, VAlert, VFlex, VBtn, VAvatar, Ripple, VChip } from 'vuetify/lib';
 import Vue from 'vue';
 
 //
@@ -11,9 +11,8 @@ var script = {
   name: 'SimpleComponent',
 
   components: {
-    VContainer,
-    Flex: VFlex,
-    VIcon: VIcon,
+    Alert: VAlert,
+    VAlert: VAlert,
     VFlex: VFlex
   },
 
@@ -106,17 +105,19 @@ var __vue_render__ = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "v-container",
+    "v-flex",
+    {
+      directives: [{ name: "scroll", rawName: "v-scroll" }],
+      attrs: { xs12: "" }
+    },
     [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
+      _c("v-alert", { attrs: { value: true, type: "success" } }, [
+        _vm._v("\n    Autoloaded component\n  ")
+      ]),
+      _vm._v(" "),
+      _c("alert", { attrs: { value: true, type: "error" } }, [
+        _vm._v("\n    Local aliased component\n  ")
+      ])
     ],
     1
   )
@@ -532,17 +533,16 @@ function Prop(options) {
 var default_1 = /** @class */ (function (_super) {
     __extends(default_1, _super);
     function default_1() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.message = 'Hello!';
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        Prop(Boolean)
-    ], default_1.prototype, "message", void 0);
+        Prop({ type: Boolean, default: false })
+    ], default_1.prototype, "tile", void 0);
     default_1 = __decorate([
         Component({
             components: {
                 VBtn: VBtn,
+                VAvatar: VAvatar,
                 VFlex: VFlex
             },
             directives: {
@@ -573,7 +573,20 @@ var __vue_render__$1 = function() {
             { name: "my-custom-directive", rawName: "v-my-custom-directive" }
           ]
         },
-        [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _c("v-btn")],
+        [
+          _c(
+            "v-avatar",
+            { attrs: { tile: _vm.tile, color: "grey lighten-4" } },
+            [
+              _c("img", {
+                attrs: {
+                  src: "https://vuetifyjs.com/apple-touch-icon-180x180.png",
+                  alt: "avatar"
+                }
+              })
+            ]
+          )
+        ],
         1
       )
     ],
@@ -627,8 +640,7 @@ var script$1 = {
   },
 
   components: {
-    VFlex: VFlex,
-    VContainer: VContainer
+    VFlex: VFlex
   }
 };
 
@@ -641,19 +653,13 @@ var __vue_render__$2 = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_vm._t("default")],
-        2
-      )
-    ],
-    1
+    "v-flex",
+    {
+      directives: [{ name: "scroll", rawName: "v-scroll" }],
+      attrs: { xs12: "" }
+    },
+    [_vm._t("default", [_vm._v("\n    Can be used as a wrapper\n  ")])],
+    2
   )
 };
 var __vue_staticRenderFns__$2 = [];
@@ -691,22 +697,16 @@ __vue_render__$2._withStripped = true;
 var default_1$1 = /** @class */ (function (_super) {
     __extends(default_1, _super);
     function default_1() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.message = 'Hello!';
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        Prop(Boolean)
+        Prop({ type: String, default: "This is a decorated component without any vuetify import" })
     ], default_1.prototype, "message", void 0);
     default_1 = __decorate([
         Component({
-            directives: {
-                Ripple: Ripple
-            },
-
             components: {
                 VBtn: VBtn,
-                VFlex: VFlex
+                VAlert: VAlert
             }
         })
     ], default_1);
@@ -722,19 +722,11 @@ var __vue_render__$3 = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "div",
+    "v-alert",
+    { attrs: { value: true, type: "success" } },
     [
-      _c(
-        "v-flex",
-        {
-          directives: [
-            { name: "ripple", rawName: "v-ripple" },
-            { name: "my-custom-directive", rawName: "v-my-custom-directive" }
-          ]
-        },
-        [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _c("v-btn")],
-        1
-      )
+      _vm._v("\n   " + _vm._s(_vm.message) + "\n   "),
+      _c("v-btn", [_vm._v("OK!")])
     ],
     1
   )
@@ -772,21 +764,11 @@ __vue_render__$3._withStripped = true;
   );
 
 const ExportByReference = Vue.extend({
-  directives: {
-    Scroll: Scroll
-  },
-
   components: {
-    VIcon: VIcon,
-    VFlex: VFlex,
-    VContainer: VContainer
+    VChip: VChip
   },
 
-  name: 'ExportByReference',
-
-  props: {
-    icon: { type: String, default: 'close' },
-  }
+  name: 'ExportByReference'
 });
 
 /* script */
@@ -797,21 +779,7 @@ var __vue_render__$4 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
-    ],
-    1
-  )
+  return _c("v-chip", [_vm._v("Chip used by the component exported by ref")])
 };
 var __vue_staticRenderFns__$4 = [];
 __vue_render__$4._withStripped = true;
@@ -847,14 +815,14 @@ __vue_render__$4._withStripped = true;
 
 var script$2 = Vue.extend({
     components: {
-        VContainer: VContainer
+        VFlex: VFlex,
+        VChip: VChip
     },
-
     data: function () {
         return {
-            message: 'Hello!',
+            message: "Hello! It's extended component",
         };
-    }
+    },
 });
 
 /* script */
@@ -865,7 +833,7 @@ var __vue_render__$5 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("v-container", [_vm._v(_vm._s(_vm.message))])
+  return _c("v-flex", [_c("v-chip", [_vm._v(_vm._s(_vm.message))])], 1)
 };
 var __vue_staticRenderFns__$5 = [];
 __vue_render__$5._withStripped = true;
@@ -980,7 +948,7 @@ __vue_render__$6._withStripped = true;
   /* style */
   const __vue_inject_styles__$6 = function (inject) {
     if (!inject) return
-    inject("data-v-78c4fa56_0", { source: "body {\n  font-size: 1rem;\n}", map: undefined, media: undefined });
+    inject("data-v-c8064b08_0", { source: "body {\n  font-size: 1rem;\n}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -1014,8 +982,6 @@ __vue_render__$6._withStripped = true;
 //
 //
 //
-//
-//
 
 var script$4 = {
   directives: {
@@ -1023,15 +989,13 @@ var script$4 = {
   },
 
   components: {
-    VIcon: VIcon,
-    VFlex: VFlex,
-    VContainer: VContainer
+    VFlex: VFlex
   },
 
   name: 'SimpleComponent',
 
   props: {
-    icon: { type: String, default: 'close' },
+    message: { type: String, default: 'Very Simple Components' },
   }
 };
 
@@ -1044,19 +1008,12 @@ var __vue_render__$7 = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
-    ],
-    1
+    "v-flex",
+    {
+      directives: [{ name: "scroll", rawName: "v-scroll" }],
+      attrs: { xs12: "" }
+    },
+    [_vm._v("\n  " + _vm._s(_vm.message) + "\n")]
   )
 };
 var __vue_staticRenderFns__$7 = [];
@@ -1092,14 +1049,8 @@ __vue_render__$7._withStripped = true;
   );
 
 var script$5 = {
-  directives: {
-    Scroll: Scroll
-  },
-
   components: {
-    VIcon: VIcon,
-    VFlex: VFlex,
-    VContainer: VContainer
+    VAlert: VAlert
   }
 };
 
@@ -1111,21 +1062,9 @@ var __vue_render__$8 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
-    ],
-    1
-  )
+  return _c("v-alert", { attrs: { value: true, type: "warning" } }, [
+    _vm._v("\n  This component has empty script section. Oops\n")
+  ])
 };
 var __vue_staticRenderFns__$8 = [];
 __vue_render__$8._withStripped = true;
@@ -1166,21 +1105,9 @@ var __vue_render__$9 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
-    ],
-    1
-  )
+  return _c("v-alert", { attrs: { value: true, type: "error" } }, [
+    _vm._v("\n  This component does not even have a script section! 🤔\n")
+  ])
 };
 var __vue_staticRenderFns__$9 = [];
 __vue_render__$9._withStripped = true;
@@ -1205,14 +1132,8 @@ const __vue_component__$9 = normalizeComponent(
   { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
   __vue_inject_styles__$9,
   {
-    directives: {
-      Scroll: Scroll
-    },
-
     components: {
-      VIcon: VIcon,
-      VFlex: VFlex,
-      VContainer: VContainer
+      VAlert: VAlert
     }
   },
   __vue_scope_id__$9,
