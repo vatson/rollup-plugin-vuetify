@@ -48,7 +48,7 @@ You can also find the typescript example here [demo/rollup.js](https://github.co
 
 ## Demo
 
-The [`demo/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/demo/) folder and [`html preview`](https://htmlpreview.github.io/?https://github.com/vatson/rollup-plugin-vuetify/tree/master/demo/dist/index.html) were created as an example of how a project can be configured and what types of components can be used.
+The [`demo/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/demo/) folder and [`html preview`](https://htmlpreview.github.io/?https://github.com/vatson/rollup-plugin-vuetify/master/demo/dist/index.html) were created as an example of how a project can be configured and what types of components can be used.
 
 ```
 ├── dist
