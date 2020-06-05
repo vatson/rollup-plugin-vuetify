@@ -44,31 +44,41 @@ const build = async () => {
 build();
 ```
 
-You can also find the typescript example here [test/rollup.js](https://github.com/vatson/rollup-plugin-vuetify/blob/master/test/rollup.js)
+You can also find the typescript example here [demo/rollup.js](https://github.com/vatson/rollup-plugin-vuetify/blob/master/demo/rollup.js)
 
 ## Demo
 
-The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/) folder was created as an example of how a project can be configured and what types of components can be used.
+The [`demo/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/demo/) folder and [`html preview`](https://htmlpreview.github.io/?https://github.com/vatson/rollup-plugin-vuetify/tree/master/demo/dist/index.html) were created as an example of how a project can be configured and what types of components can be used.
 
 ```
-.
 ├── dist
-│   ├── ts.js                    <- bundled with @rollup/plugin-typescript
-│   └── ts2.js                   <- bundled with rollup-typescript-2
-├── rollup.js                    <- rollup configuration
+│   ├── browser.js                      <- fully compiled application without vue but with vuetify
+│   ├── index.html                      <- demo with application to show that everything is ok
+│   ├── ts.js                           <- bundled components with @rollup/plugin-typescript
+│   └── ts2.js                          <- bundled components with rollup-typescript-2
+├── rollup.js                           <- rollup configuration
 ├── src
-│   ├── Complex.vue              <- component with partial manual import
-│   ├── Decorated.vue            <- component decorated with vue-property-component
-│   ├── Empty.vue                <- component without any properties, can be used as a wrapper
-│   ├── EmptyDecorator.vue       <- component with "empty" decorator
-│   ├── Extended.vue             <- component created with Vue.extend()
-│   ├── External                 <- component splitted into separate files
-│   │   ├── Component.vue
-│   │   ├── index.js
-│   │   ├── script.js
-│   │   └── template.html
-│   ├── Simple.vue               <- simple generic component
-│   └── index.js
+│   ├── App.vue                         <- application component
+│   ├── Components                      <- components with all possible scenarios
+│   │   ├── Complex.vue                 <- component with partial manual import
+│   │   ├── Decorated.vue               <- component decorated with `vue-property-decorator`
+│   │   ├── Empty.vue                   <- component without any properties, can be used as a wrapper
+│   │   ├── EmptyDecorator.vue          <- component with "empty" decorator
+│   │   ├── ExportByReference.vue       <- component with export defined previously as a variable
+│   │   ├── Extended.vue                <- component created with Vue.extend()
+│   │   ├── External                    <- component splitted into separate files
+│   │   │   ├── Component.vue
+│   │   │   ├── index.js
+│   │   │   ├── script.js
+│   │   │   ├── style.css
+│   │   │   └── template.html
+│   │   ├── Simple.vue                  <- simple generic component
+│   │   ├── WithEmptyScript.vue         <- component with empty `script` section
+│   │   ├── WithoutScript.vue           <- component without `script` section, best choice for template chunks
+│   │   └── index.js
+│   ├── index.js                        <- entry point to bundle components as es module without vue and vuetify
+│   ├── main.js                         <- entry point of application
+│   └── shims-vue.d.ts
 └── tsconfig.json
 ```
 
@@ -82,8 +92,9 @@ The [`test/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/test/)
 
 ## Known Caveats
 
-- Plugin doesn't allow overwriting the built-in vuetify components with your own (knows as [Custom Dynamic imports](https://vuetifyjs.com/ru/customization/a-la-carte#custom-dynamic-imports));
+- Plugin doesn't allow overwriting the built-in vuetify components with your own (known as [Custom Dynamic imports](https://vuetifyjs.com/ru/customization/a-la-carte#custom-dynamic-imports));
 - All known limitations of the original vuetify-loader (see more here [https://vuetifyjs.com/ru/customization/a-la-carte#limitations](https://vuetifyjs.com/ru/customization/a-la-carte#limitations));
+- Plugin doesn't support the re-exported components from `script` section;
 
 ## Under The Hood
 

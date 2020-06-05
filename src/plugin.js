@@ -5,32 +5,32 @@ const transform = require("./transform");
 
 const externalScriptTemplate = new Map();
 
-module.exports = (options = {}) => {
-  const filter = createFilter(/.*\.vue/);
+const extractAndTransform = (code, template) => {
+  const { directives, components } = extract(template);
+  return transform(code, components, directives);
+}
 
+const filter = createFilter(/.*\.vue/);
+
+module.exports = (options = {}) => {
   return {
     async transform(code, id) {
-      let template;
-
       if (externalScriptTemplate.has(id)) {
-        template = externalScriptTemplate.get(id);
+        return extractAndTransform(code, externalScriptTemplate.get(id));
       } else if (filter(id)) {
         const source = await load(id);
 
         if (source.isExternalScript) {
           externalScriptTemplate.set(source.scriptPath, source.template);
           return;
-        } else if (!/\?.*$/.test(id)) {
-          return;
+        } 
+        else if (/\.*vue\?((?!map).)*$/i.test(id) || !source.script) {
+          if (typeof source.script === 'string' && source.script.trim() === '') {
+            code = 'export default {}';
+          }
+
+          return extractAndTransform(code, source.template);
         }
-
-        template = source.template;
-      }
-
-      if (template) {
-        const { directives, components } = extract(template);
-
-        return transform(code, components, directives);
       }
     },
   };

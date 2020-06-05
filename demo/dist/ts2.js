@@ -1,4 +1,4 @@
-import { Scroll, VContainer, VFlex, VIcon, VBtn, Ripple } from 'vuetify/lib';
+import { Scroll, VAlert, VFlex, VBtn, VAvatar, Ripple, VChip } from 'vuetify/lib';
 import Vue from 'vue';
 
 //
@@ -11,9 +11,8 @@ var script = {
   name: 'SimpleComponent',
 
   components: {
-    VContainer,
-    Flex: VFlex,
-    VIcon: VIcon,
+    Alert: VAlert,
+    VAlert: VAlert,
     VFlex: VFlex
   },
 
@@ -106,17 +105,19 @@ var __vue_render__ = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "v-container",
+    "v-flex",
+    {
+      directives: [{ name: "scroll", rawName: "v-scroll" }],
+      attrs: { xs12: "" }
+    },
     [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
+      _c("v-alert", { attrs: { value: true, type: "success" } }, [
+        _vm._v("\n    Autoloaded component\n  ")
+      ]),
+      _vm._v(" "),
+      _c("alert", { attrs: { value: true, type: "error" } }, [
+        _vm._v("\n    Local aliased component\n  ")
+      ])
     ],
     1
   )
@@ -532,17 +533,16 @@ function Prop(options) {
 var default_1 = /** @class */ (function (_super) {
     __extends(default_1, _super);
     function default_1() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.message = 'Hello!';
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        Prop(Boolean)
-    ], default_1.prototype, "message", void 0);
+        Prop({ type: Boolean, default: false })
+    ], default_1.prototype, "tile", void 0);
     default_1 = __decorate([
         Component({
             components: {
                 VBtn: VBtn,
+                VAvatar: VAvatar,
                 VFlex: VFlex
             },
             directives: {
@@ -573,7 +573,20 @@ var __vue_render__$1 = function() {
             { name: "my-custom-directive", rawName: "v-my-custom-directive" }
           ]
         },
-        [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _c("v-btn")],
+        [
+          _c(
+            "v-avatar",
+            { attrs: { tile: _vm.tile, color: "grey lighten-4" } },
+            [
+              _c("img", {
+                attrs: {
+                  src: "https://vuetifyjs.com/apple-touch-icon-180x180.png",
+                  alt: "avatar"
+                }
+              })
+            ]
+          )
+        ],
         1
       )
     ],
@@ -627,8 +640,7 @@ var script$1 = {
   },
 
   components: {
-    VFlex: VFlex,
-    VContainer: VContainer
+    VFlex: VFlex
   }
 };
 
@@ -641,19 +653,13 @@ var __vue_render__$2 = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_vm._t("default")],
-        2
-      )
-    ],
-    1
+    "v-flex",
+    {
+      directives: [{ name: "scroll", rawName: "v-scroll" }],
+      attrs: { xs12: "" }
+    },
+    [_vm._t("default", [_vm._v("\n    Can be used as a wrapper\n  ")])],
+    2
   )
 };
 var __vue_staticRenderFns__$2 = [];
@@ -691,22 +697,16 @@ __vue_render__$2._withStripped = true;
 var default_1$1 = /** @class */ (function (_super) {
     __extends(default_1, _super);
     function default_1() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.message = 'Hello!';
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        Prop(Boolean)
+        Prop({ type: String, default: "This is a decorated component without any vuetify import" })
     ], default_1.prototype, "message", void 0);
     default_1 = __decorate([
         Component({
-            directives: {
-                Ripple: Ripple
-            },
-
             components: {
                 VBtn: VBtn,
-                VFlex: VFlex
+                VAlert: VAlert
             }
         })
     ], default_1);
@@ -722,19 +722,11 @@ var __vue_render__$3 = function() {
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
   return _c(
-    "div",
+    "v-alert",
+    { attrs: { value: true, type: "success" } },
     [
-      _c(
-        "v-flex",
-        {
-          directives: [
-            { name: "ripple", rawName: "v-ripple" },
-            { name: "my-custom-directive", rawName: "v-my-custom-directive" }
-          ]
-        },
-        [_vm._v("\n    " + _vm._s(_vm.message) + "\n    "), _c("v-btn")],
-        1
-      )
+      _vm._v("\n   " + _vm._s(_vm.message) + "\n   "),
+      _c("v-btn", [_vm._v("OK!")])
     ],
     1
   )
@@ -771,27 +763,23 @@ __vue_render__$3._withStripped = true;
     undefined
   );
 
-var script$2 = Vue.extend({
-    components: {
-        VContainer: VContainer
-    },
+const ExportByReference = Vue.extend({
+  components: {
+    VChip: VChip
+  },
 
-    data: function () {
-        return {
-            message: 'Hello!',
-        };
-    }
+  name: 'ExportByReference'
 });
 
 /* script */
-const __vue_script__$4 = script$2;
+const __vue_script__$4 = ExportByReference;
 
 /* template */
 var __vue_render__$4 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("v-container", [_vm._v(_vm._s(_vm.message))])
+  return _c("v-chip", [_vm._v("Chip used by the component exported by ref")])
 };
 var __vue_staticRenderFns__$4 = [];
 __vue_render__$4._withStripped = true;
@@ -825,27 +813,27 @@ __vue_render__$4._withStripped = true;
     undefined
   );
 
-var script$3 = {
-  components: {
-    VBtn: VBtn
-  },
-
-  name: "ExternalComponent",
-
-  props: {
-    text: { type: String, default: "it's external component!" },
-  }
-};
+var script$2 = Vue.extend({
+    components: {
+        VFlex: VFlex,
+        VChip: VChip
+    },
+    data: function () {
+        return {
+            message: "Hello! It's extended component",
+        };
+    },
+});
 
 /* script */
-const __vue_script__$5 = script$3;
+const __vue_script__$5 = script$2;
 
 /* template */
 var __vue_render__$5 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("div", [_c("v-btn", [_vm._v(_vm._s(_vm.text))])], 1)
+  return _c("v-flex", [_c("v-chip", [_vm._v(_vm._s(_vm.message))])], 1)
 };
 var __vue_staticRenderFns__$5 = [];
 __vue_render__$5._withStripped = true;
@@ -879,70 +867,96 @@ __vue_render__$5._withStripped = true;
     undefined
   );
 
-//
-//
-//
-//
-//
-//
-//
-//
-
-var script$4 = {
-  directives: {
-    Scroll: Scroll
-  },
-
+var script$3 = {
   components: {
-    VIcon: VIcon,
-    VFlex: VFlex,
-    VContainer: VContainer
+    VBtn: VBtn
   },
 
-  name: 'SimpleComponent',
+  name: "ExternalComponent",
 
   props: {
-    icon: { type: String, default: 'close' },
+    text: { type: String, default: "it's external component!" },
   }
 };
 
+const isOldIE = typeof navigator !== 'undefined' &&
+    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+function createInjector(context) {
+    return (id, style) => addStyle(id, style);
+}
+let HEAD;
+const styles = {};
+function addStyle(id, css) {
+    const group = isOldIE ? css.media || 'default' : id;
+    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
+    if (!style.ids.has(id)) {
+        style.ids.add(id);
+        let code = css.source;
+        if (css.map) {
+            // https://developer.chrome.com/devtools/docs/javascript-debugging
+            // this makes source maps inside style tags work properly in Chrome
+            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
+            // http://stackoverflow.com/a/26603875
+            code +=
+                '\n/*# sourceMappingURL=data:application/json;base64,' +
+                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
+                    ' */';
+        }
+        if (!style.element) {
+            style.element = document.createElement('style');
+            style.element.type = 'text/css';
+            if (css.media)
+                style.element.setAttribute('media', css.media);
+            if (HEAD === undefined) {
+                HEAD = document.head || document.getElementsByTagName('head')[0];
+            }
+            HEAD.appendChild(style.element);
+        }
+        if ('styleSheet' in style.element) {
+            style.styles.push(code);
+            style.element.styleSheet.cssText = style.styles
+                .filter(Boolean)
+                .join('\n');
+        }
+        else {
+            const index = style.ids.size - 1;
+            const textNode = document.createTextNode(code);
+            const nodes = style.element.childNodes;
+            if (nodes[index])
+                style.element.removeChild(nodes[index]);
+            if (nodes.length)
+                style.element.insertBefore(textNode, nodes[index]);
+            else
+                style.element.appendChild(textNode);
+        }
+    }
+}
+
 /* script */
-const __vue_script__$6 = script$4;
+const __vue_script__$6 = script$3;
 
 /* template */
 var __vue_render__$6 = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c(
-    "v-container",
-    [
-      _c(
-        "v-flex",
-        {
-          directives: [{ name: "scroll", rawName: "v-scroll" }],
-          attrs: { xs12: "" }
-        },
-        [_c("v-icon", [_vm._v(_vm._s(_vm.icon))])],
-        1
-      )
-    ],
-    1
-  )
+  return _c("div", [_c("v-btn", [_vm._v(_vm._s(_vm.text))])], 1)
 };
 var __vue_staticRenderFns__$6 = [];
 __vue_render__$6._withStripped = true;
 
   /* style */
-  const __vue_inject_styles__$6 = undefined;
+  const __vue_inject_styles__$6 = function (inject) {
+    if (!inject) return
+    inject("data-v-c8064b08_0", { source: "body {\n  font-size: 1rem;\n}", map: undefined, media: undefined });
+
+  };
   /* scoped */
   const __vue_scope_id__$6 = undefined;
   /* module identifier */
   const __vue_module_identifier__$6 = undefined;
   /* functional template */
   const __vue_is_functional_template__$6 = false;
-  /* style inject */
-  
   /* style inject SSR */
   
   /* style inject shadow dom */
@@ -957,9 +971,178 @@ __vue_render__$6._withStripped = true;
     __vue_is_functional_template__$6,
     __vue_module_identifier__$6,
     false,
+    createInjector,
+    undefined,
+    undefined
+  );
+
+//
+//
+//
+//
+//
+//
+
+var script$4 = {
+  directives: {
+    Scroll: Scroll
+  },
+
+  components: {
+    VFlex: VFlex
+  },
+
+  name: 'SimpleComponent',
+
+  props: {
+    message: { type: String, default: 'Very Simple Components' },
+  }
+};
+
+/* script */
+const __vue_script__$7 = script$4;
+
+/* template */
+var __vue_render__$7 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c(
+    "v-flex",
+    {
+      directives: [{ name: "scroll", rawName: "v-scroll" }],
+      attrs: { xs12: "" }
+    },
+    [_vm._v("\n  " + _vm._s(_vm.message) + "\n")]
+  )
+};
+var __vue_staticRenderFns__$7 = [];
+__vue_render__$7._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$7 = undefined;
+  /* scoped */
+  const __vue_scope_id__$7 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$7 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$7 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+  /* style inject shadow dom */
+  
+
+  
+  const __vue_component__$7 = normalizeComponent(
+    { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
+    __vue_inject_styles__$7,
+    __vue_script__$7,
+    __vue_scope_id__$7,
+    __vue_is_functional_template__$7,
+    __vue_module_identifier__$7,
+    false,
     undefined,
     undefined,
     undefined
   );
 
-export { __vue_component__ as Complex, __vue_component__$1 as Decorated, __vue_component__$2 as Empty, __vue_component__$3 as EmptyDecorator, __vue_component__$4 as Extended, __vue_component__$5 as External, __vue_component__$6 as Simple };
+var script$5 = {
+  components: {
+    VAlert: VAlert
+  }
+};
+
+/* script */
+const __vue_script__$8 = script$5;
+
+/* template */
+var __vue_render__$8 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("v-alert", { attrs: { value: true, type: "warning" } }, [
+    _vm._v("\n  This component has empty script section. Oops\n")
+  ])
+};
+var __vue_staticRenderFns__$8 = [];
+__vue_render__$8._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__$8 = undefined;
+  /* scoped */
+  const __vue_scope_id__$8 = undefined;
+  /* module identifier */
+  const __vue_module_identifier__$8 = undefined;
+  /* functional template */
+  const __vue_is_functional_template__$8 = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+  /* style inject shadow dom */
+  
+
+  
+  const __vue_component__$8 = normalizeComponent(
+    { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
+    __vue_inject_styles__$8,
+    __vue_script__$8,
+    __vue_scope_id__$8,
+    __vue_is_functional_template__$8,
+    __vue_module_identifier__$8,
+    false,
+    undefined,
+    undefined,
+    undefined
+  );
+
+/* script */
+
+/* template */
+var __vue_render__$9 = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("v-alert", { attrs: { value: true, type: "error" } }, [
+    _vm._v("\n  This component does not even have a script section! 🤔\n")
+  ])
+};
+var __vue_staticRenderFns__$9 = [];
+__vue_render__$9._withStripped = true;
+
+/* style */
+const __vue_inject_styles__$9 = undefined;
+/* scoped */
+const __vue_scope_id__$9 = undefined;
+/* module identifier */
+const __vue_module_identifier__$9 = undefined;
+/* functional template */
+const __vue_is_functional_template__$9 = false;
+/* style inject */
+
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+
+
+const __vue_component__$9 = normalizeComponent(
+  { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
+  __vue_inject_styles__$9,
+  {
+    components: {
+      VAlert: VAlert
+    }
+  },
+  __vue_scope_id__$9,
+  __vue_is_functional_template__$9,
+  __vue_module_identifier__$9,
+  false,
+  undefined,
+  undefined,
+  undefined
+);
+
+export { __vue_component__ as Complex, __vue_component__$1 as Decorated, __vue_component__$2 as Empty, __vue_component__$3 as EmptyDecorator, __vue_component__$4 as ExportByReference, __vue_component__$5 as Extended, __vue_component__$6 as External, __vue_component__$7 as Simple, __vue_component__$8 as WithEmptyScript, __vue_component__$9 as WithoutScript };

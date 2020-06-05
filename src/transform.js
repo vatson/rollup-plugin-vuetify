@@ -30,7 +30,7 @@ const injectImports = (importTarget, imports = []) => {
   ];
 };
 
-const getDecorator = ast => {
+const findDecorator = ast => {
   const assignment = ast.find(j.AssignmentExpression, {
     left: {
       type: "Identifier",
@@ -47,6 +47,10 @@ const getDecorator = ast => {
     },
   });
 
+  if (assignment.length === 0) {
+    return assignment;
+  }
+
   const call = assignment.find(j.CallExpression, {
     callee: {
       type: "Identifier",
@@ -54,7 +58,9 @@ const getDecorator = ast => {
     },
   });
 
-  if (call.length) return call;
+  if (call.length !== 0) {
+    return call;
+  } 
 
   assignment
     .find(j.Identifier, { name: "Component" })
@@ -65,14 +71,39 @@ const getDecorator = ast => {
   return assignment;
 };
 
+const findNormalizedComponentExpression = ast => ast.find(j.CallExpression, { callee: { name: '__vue_normalize__'}});
+
+const findExport = ast => {
+  const exportDeclaration = ast.find(j.ExportDefaultDeclaration);
+  const exportAsObject = exportDeclaration.find(j.ObjectExpression);
+
+  if (exportAsObject.length !== 0) {
+    return exportAsObject;
+  }
+
+  // Export by reference
+  const variableName = exportDeclaration.at(0).get().value.declaration.name;
+  const variableDeclaration = ast.find(j.VariableDeclarator, { id: { name: variableName } });
+  const normalizedComponentExpression = findNormalizedComponentExpression(variableDeclaration);
+
+  if(normalizedComponentExpression.length !== 0) {
+    return normalizedComponentExpression.find(j.ObjectExpression).at(1);
+  };
+
+  return variableDeclaration.find(j.ObjectExpression);
+}
+
 const findUseTarget = (ast, target) => {
-  const decorator = getDecorator(ast);
-  const objTarget = decorator.length
+  const decorator = findDecorator(ast);
+  const objTarget = decorator.length !== 0
     ? decorator.find(j.ObjectExpression)
-    : ast.find(j.ExportDefaultDeclaration).find(j.ObjectExpression);
+    : findExport(ast)
+  ;
 
   const finding = objTarget.find(j.Property, path => path.key.name === target);
-  if (finding.length) return finding;
+  if (finding.length !== 0) {
+    return finding;
+  } 
 
   const newProperty = j.property(
     "init",
@@ -107,11 +138,11 @@ module.exports = (code, components = [], directives = []) => {
   const importTarget = findImportTarget(ast);
   injectImports(importTarget, [...components, ...directives]);
 
-  if (components.length) {
+  if (components.length !== 0) {
     const useComponentsTarget = findUseTarget(ast, "components");
     useImported(useComponentsTarget, components);
   }
-  if (directives.length) {
+  if (directives.length !== 0) {
     const useDirectivesTarget = findUseTarget(ast, "directives");
     useImported(useDirectivesTarget, directives);
   }
