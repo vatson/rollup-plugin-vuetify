@@ -6,8 +6,15 @@ const transform = require("./transform");
 const externalScriptTemplate = new Map();
 
 const extractAndTransform = (code, template) => {
-  const { directives, components } = extract(template);
-  return transform(code, components, directives);
+  // If template exists, extract component and directives
+  if (template) {
+    let { directives, components } = extract(template)
+    return transform(code, components, directives)
+  } else {
+    // If vue component uses render() function https://vuejs.org/v2/guide/render-function.html
+    // then template does not exist, thus transforming only code.
+    return transform(code)
+  }
 }
 
 const filter = createFilter(/.*\.vue/);
