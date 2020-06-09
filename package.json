@@ -32,7 +32,7 @@
     "@rollup/plugin-typescript": "3.1.1",
     "rollup": "1.32.1",
     "rollup-plugin-postcss": "3.1.2",
-    "rollup-plugin-typescript2": "0.22.1",
+    "rollup-plugin-typescript2": "0.27.1",
     "rollup-plugin-vue": "5.1.6",
     "typescript": "2.9.2",
     "vue": "2.6.11",
