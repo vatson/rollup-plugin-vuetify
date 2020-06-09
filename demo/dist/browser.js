@@ -8969,15 +8969,18 @@
           return _super !== null && _super.apply(this, arguments) || this;
       }
       __decorate([
-          Prop({ type: String, default: "This is a decorated component without any vuetify import" })
-      ], default_1.prototype, "message", void 0);
-      default_1 = __decorate([
-          Component({
+          Prop({
               components: {
                   VBtn: VBtn,
                   VAlert: VAlert
-              }
+              },
+
+              type: String,
+              default: "This is a decorated component without any vuetify import"
           })
+      ], default_1.prototype, "message", void 0);
+      default_1 = __decorate([
+          Component
       ], default_1);
       return default_1;
   }(Vue));
