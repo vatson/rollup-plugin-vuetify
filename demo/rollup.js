@@ -43,7 +43,6 @@ const build = async () => {
         postcss(),
         vue(),
         typescript2({
-          objectHashIgnoreUnknownHack: true,
           tsconfig: resolve(__dirname, "tsconfig.json"),
         }),
         plugin(),
@@ -64,7 +63,6 @@ const build = async () => {
         }),
         vue(),
         typescript2({
-          objectHashIgnoreUnknownHack: true,
           tsconfig: resolve(__dirname, "tsconfig.json"),
         }),
         plugin(),
