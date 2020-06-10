@@ -37,7 +37,7 @@
     "typescript": "3.9.5",
     "vue": "2.6.11",
     "vue-property-decorator": "8.4.2",
-    "vuetify": "2.2.20"
+    "vuetify": "2.2.34"
   },
   "dependencies": {
     "jscodeshift": "^0.10.0",
