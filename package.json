@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "jscodeshift": "^0.10.0",
-    "rollup-pluginutils": "^2.8.2",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.3"
   }

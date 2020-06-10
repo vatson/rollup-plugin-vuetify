@@ -1,4 +1,3 @@
-const { createFilter } = require("rollup-pluginutils");
 const load = require("./load");
 const extract = require("./extract");
 const transform = require("./transform");
@@ -13,14 +12,13 @@ const extractAndTransform = (code, template = "") => {
 };
 
 const externalScriptTemplate = new Map();
-const filter = createFilter(/.*\.vue/);
 
 module.exports = () => ({
   name: "vuetify",
   async transform(code, id) {
     if (externalScriptTemplate.has(id)) {
       return extractAndTransform(code, externalScriptTemplate.get(id));
-    } else if (filter(id)) {
+    } else if (/.*\.vue/.test(id)) {
       const source = await load(id);
 
       if (source.isExternalScript) {
