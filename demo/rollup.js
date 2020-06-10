@@ -6,7 +6,7 @@ const vue = require("rollup-plugin-vue");
 const commonjs = require("@rollup/plugin-commonjs");
 const replace = require("@rollup/plugin-replace");
 
-const resolveNode = require("@rollup/plugin-node-resolve");
+const { nodeResolve } = require("@rollup/plugin-node-resolve");
 const typescript = require("@rollup/plugin-typescript");
 const typescript2 = require("rollup-plugin-typescript2");
 const postcss = require("rollup-plugin-postcss");
@@ -19,7 +19,7 @@ const build = async () => {
       input: resolve(__dirname, "src/index.js"),
       external: ["vue", "vuetify/lib"],
       plugins: [
-        resolveNode(),
+        nodeResolve(),
         commonjs(),
         postcss(),
         vue(),
@@ -38,12 +38,11 @@ const build = async () => {
       input: resolve(__dirname, "src/index.js"),
       external: ["vue", "vuetify/lib"],
       plugins: [
-        resolveNode(),
+        nodeResolve(),
         commonjs(),
         postcss(),
         vue(),
         typescript2({
-          objectHashIgnoreUnknownHack: true,
           tsconfig: resolve(__dirname, "tsconfig.json"),
         }),
         plugin(),
@@ -56,7 +55,7 @@ const build = async () => {
       input: resolve(__dirname, "src/main.js"),
       external: ["vue"],
       plugins: [
-        resolveNode(),
+        nodeResolve(),
         commonjs(),
         postcss(),
         replace({
@@ -64,7 +63,6 @@ const build = async () => {
         }),
         vue(),
         typescript2({
-          objectHashIgnoreUnknownHack: true,
           tsconfig: resolve(__dirname, "tsconfig.json"),
         }),
         plugin(),

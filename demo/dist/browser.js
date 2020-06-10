@@ -922,11 +922,21 @@
     return e.constructor.name === 'TouchEvent';
   }
 
+  function isKeyboardEvent(e) {
+    return e.constructor.name === 'KeyboardEvent';
+  }
+
   const calculate = (e, el, value = {}) => {
-    const offset = el.getBoundingClientRect();
-    const target = isTouchEvent(e) ? e.touches[e.touches.length - 1] : e;
-    const localX = target.clientX - offset.left;
-    const localY = target.clientY - offset.top;
+    let localX = 0;
+    let localY = 0;
+
+    if (!isKeyboardEvent(e)) {
+      const offset = el.getBoundingClientRect();
+      const target = isTouchEvent(e) ? e.touches[e.touches.length - 1] : e;
+      localX = target.clientX - offset.left;
+      localY = target.clientY - offset.top;
+    }
+
     let radius = 0;
     let scale = 0.3;
 
@@ -1048,7 +1058,7 @@
       if (element._ripple.isTouch) return;
     }
 
-    value.center = element._ripple.centered;
+    value.center = element._ripple.centered || isKeyboardEvent(e);
 
     if (element._ripple.class) {
       value.class = element._ripple.class;
@@ -1066,6 +1076,20 @@
       }
     });
     ripples.hide(element);
+  }
+
+  let keyboardRipple = false;
+
+  function keyboardRippleShow(e) {
+    if (!keyboardRipple && (e.keyCode === keyCodes.enter || e.keyCode === keyCodes.space)) {
+      keyboardRipple = true;
+      rippleShow(e);
+    }
+  }
+
+  function keyboardRippleHide(e) {
+    keyboardRipple = false;
+    rippleHide(e);
   }
 
   function updateRipple(el, binding, wasEnabled) {
@@ -1101,7 +1125,9 @@
       el.addEventListener('touchcancel', rippleHide);
       el.addEventListener('mousedown', rippleShow);
       el.addEventListener('mouseup', rippleHide);
-      el.addEventListener('mouseleave', rippleHide); // Anchor tags can be dragged, causes other hides to fail - #1537
+      el.addEventListener('mouseleave', rippleHide);
+      el.addEventListener('keydown', keyboardRippleShow);
+      el.addEventListener('keyup', keyboardRippleHide); // Anchor tags can be dragged, causes other hides to fail - #1537
 
       el.addEventListener('dragstart', rippleHide, {
         passive: true
@@ -1118,6 +1144,8 @@
     el.removeEventListener('touchcancel', rippleHide);
     el.removeEventListener('mouseup', rippleHide);
     el.removeEventListener('mouseleave', rippleHide);
+    el.removeEventListener('keydown', keyboardRippleShow);
+    el.removeEventListener('keyup', keyboardRippleHide);
     el.removeEventListener('dragstart', rippleHide);
   }
 
@@ -1362,7 +1390,8 @@
         if (size) {
           data.style = {
             fontSize: size,
-            height: size
+            height: size,
+            width: size
           };
         }
 
@@ -1869,6 +1898,7 @@
 
     methods: {
       click(e) {
+        // TODO: Remove this in v3
         !this.retainFocusOnClick && !this.fab && e.detail && this.$el.blur();
         this.$emit('click', e);
         this.btnToggle && this.toggle();
@@ -4290,19 +4320,24 @@
       data.attrs = { ...data.attrs,
         ...this.genAttrs()
       };
-      data.on = { ...data.on,
-        click: this.click,
+      data[this.to ? 'nativeOn' : 'on'] = { ...data[this.to ? 'nativeOn' : 'on'],
         keydown: e => {
           /* istanbul ignore else */
           if (e.keyCode === keyCodes.enter) this.click(e);
           this.$emit('keydown', e);
         }
       };
+      if (this.inactive) tag = 'div';
+
+      if (this.inactive && this.to) {
+        data.on = data.nativeOn;
+        delete data.nativeOn;
+      }
+
       const children = this.$scopedSlots.default ? this.$scopedSlots.default({
         active: this.isActive,
         toggle: this.toggle
       }) : this.$slots.default;
-      tag = this.inactive ? 'div' : tag;
       return h(tag, this.setTextColor(this.color, data), children);
     }
 
@@ -5948,7 +5983,7 @@
         return this.$createElement('input', {
           style: {},
           domProps: {
-            value: this.lazyValue
+            value: this.type === 'number' && Object.is(this.lazyValue, -0) ? '-0' : this.lazyValue
           },
           attrs: { ...this.attrs$,
             autofocus: this.autofocus,
@@ -6040,8 +6075,8 @@
       },
 
       setLabelWidth() {
-        if (!this.outlined || !this.$refs.label) return;
-        this.labelWidth = Math.min(this.$refs.label.scrollWidth * 0.75 + 6, this.$el.offsetWidth - 24);
+        if (!this.outlined) return;
+        this.labelWidth = this.$refs.label ? Math.min(this.$refs.label.scrollWidth * 0.75 + 6, this.$el.offsetWidth - 24) : 0;
       },
 
       setPrefixWidth() {
@@ -6665,12 +6700,15 @@
         const item = this.allItems[index];
 
         if (index !== -1) {
+          this.lastItem = Math.max(this.lastItem, index + 5);
           this.setValue(this.returnObject ? item : this.getValue(item));
+          this.$nextTick(() => this.$refs.menu.getTiles());
           setTimeout(() => this.setMenuIndex(index));
         }
       },
 
       onKeyDown(e) {
+        if (this.readonly && e.keyCode !== keyCodes.tab) return;
         const keyCode = e.keyCode;
         const menu = this.$refs.menu; // If enter, space, open menu
 
@@ -8289,7 +8327,7 @@
   }
   Vuetify.install = install;
   Vuetify.installed = false;
-  Vuetify.version = "2.2.20";
+  Vuetify.version = "2.2.34";
 
   //
 
@@ -8431,7 +8469,7 @@
     
 
     
-    const __vue_component__ = normalizeComponent(
+    const __vue_component__ = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
       __vue_inject_styles__,
       __vue_script__,
@@ -8445,18 +8483,18 @@
     );
 
   /*! *****************************************************************************
-  Copyright (c) Microsoft Corporation. All rights reserved.
-  Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-  this file except in compliance with the License. You may obtain a copy of the
-  License at http://www.apache.org/licenses/LICENSE-2.0
+  Copyright (c) Microsoft Corporation.
 
-  THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-  WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-  MERCHANTABLITY OR NON-INFRINGEMENT.
+  Permission to use, copy, modify, and/or distribute this software for any
+  purpose with or without fee is hereby granted.
 
-  See the Apache Version 2.0 License for specific language governing permissions
-  and limitations under the License.
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+  REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+  AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+  INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+  LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+  OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
   ***************************************************************************** */
   /* global Reflect, Promise */
 
@@ -8769,7 +8807,7 @@
     $internalHooks.push.apply($internalHooks, _toConsumableArray(keys));
   };
 
-  /** vue-property-decorator verson 8.4.1 MIT LICENSE copyright 2019 kaorun343 */
+  /** vue-property-decorator verson 8.4.2 MIT LICENSE copyright 2019 kaorun343 */
   /** @see {@link https://github.com/vuejs/vue-class-component/blob/master/src/reflect.ts} */
   var reflectMetadataIsSupported = typeof Reflect !== 'undefined' && typeof Reflect.getMetadata !== 'undefined';
   function applyMetadata(options, target, key) {
@@ -8881,7 +8919,7 @@
     
 
     
-    const __vue_component__$1 = normalizeComponent(
+    const __vue_component__$1 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
       __vue_inject_styles__$1,
       __vue_script__$1,
@@ -8950,7 +8988,7 @@
     
 
     
-    const __vue_component__$2 = normalizeComponent(
+    const __vue_component__$2 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
       __vue_inject_styles__$2,
       __vue_script__$2,
@@ -8969,15 +9007,18 @@
           return _super !== null && _super.apply(this, arguments) || this;
       }
       __decorate([
-          Prop({ type: String, default: "This is a decorated component without any vuetify import" })
-      ], default_1.prototype, "message", void 0);
-      default_1 = __decorate([
-          Component({
+          Prop({
               components: {
                   VBtn: VBtn,
                   VAlert: VAlert
-              }
+              },
+
+              type: String,
+              default: "This is a decorated component without any vuetify import"
           })
+      ], default_1.prototype, "message", void 0);
+      default_1 = __decorate([
+          Component
       ], default_1);
       return default_1;
   }(Vue));
@@ -9019,7 +9060,7 @@
     
 
     
-    const __vue_component__$3 = normalizeComponent(
+    const __vue_component__$3 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
       __vue_inject_styles__$3,
       __vue_script__$3,
@@ -9069,7 +9110,7 @@
     
 
     
-    const __vue_component__$4 = normalizeComponent(
+    const __vue_component__$4 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
       __vue_inject_styles__$4,
       __vue_script__$4,
@@ -9123,7 +9164,7 @@
     
 
     
-    const __vue_component__$5 = normalizeComponent(
+    const __vue_component__$5 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
       __vue_inject_styles__$5,
       __vue_script__$5,
@@ -9232,7 +9273,7 @@
     
 
     
-    const __vue_component__$6 = normalizeComponent(
+    const __vue_component__$6 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
       __vue_inject_styles__$6,
       __vue_script__$6,
@@ -9304,7 +9345,7 @@
     
 
     
-    const __vue_component__$7 = normalizeComponent(
+    const __vue_component__$7 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
       __vue_inject_styles__$7,
       __vue_script__$7,
@@ -9354,7 +9395,7 @@
     
 
     
-    const __vue_component__$8 = normalizeComponent(
+    const __vue_component__$8 = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
       __vue_inject_styles__$8,
       __vue_script__$8,
@@ -9397,7 +9438,7 @@
 
 
 
-  const __vue_component__$9 = normalizeComponent(
+  const __vue_component__$9 = /*#__PURE__*/normalizeComponent(
     { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
     __vue_inject_styles__$9,
     {
@@ -9413,8 +9454,6 @@
     undefined,
     undefined
   );
-
-
 
   var components = /*#__PURE__*/Object.freeze({
     __proto__: null,
@@ -9495,7 +9534,7 @@
     
 
     
-    const __vue_component__$a = normalizeComponent(
+    const __vue_component__$a = /*#__PURE__*/normalizeComponent(
       { render: __vue_render__$a, staticRenderFns: __vue_staticRenderFns__$a },
       __vue_inject_styles__$a,
       __vue_script__$9,

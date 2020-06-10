@@ -95,6 +95,7 @@ The [`demo/`](https://github.com/vatson/rollup-plugin-vuetify/tree/master/demo/)
 - Plugin doesn't allow overwriting the built-in vuetify components with your own (known as [Custom Dynamic imports](https://vuetifyjs.com/ru/customization/a-la-carte#custom-dynamic-imports));
 - All known limitations of the original vuetify-loader (see more here [https://vuetifyjs.com/ru/customization/a-la-carte#limitations](https://vuetifyjs.com/ru/customization/a-la-carte#limitations));
 - Plugin doesn't support the re-exported components from `script` section;
+- Do not use @rollup/plugin-typescript > 3.1.1. It isn't compatible with vue;
 
 ## Under The Hood
 
