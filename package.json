@@ -38,7 +38,7 @@
     "vue": "2.6.11",
     "vue-class-decorator": "7.6.3",
     "vue-property-decorator": "9.0.0",
-    "vuetify": "2.2.34"
+    "vuetify": "2.3.4"
   },
   "dependencies": {
     "jscodeshift": "^0.10.0",
