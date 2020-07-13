@@ -24,7 +24,7 @@ module.exports = () => ({
       if (source.isExternalScript) {
         externalScriptTemplate.set(source.scriptPath, source.template);
         return;
-      } else if (/\.*vue\?((?!map).)*$/i.test(id) || !source.script) {
+      } else if (/\.*vue\?rollup-plugin-vue=script((?!map).)*$/i.test(id) || !source.script) {
         if (typeof source.script === "string" && source.script.trim() === "") {
           code = "export default {}";
         }

@@ -486,7 +486,7 @@ Component.registerHooks = function registerHooks(keys) {
   $internalHooks.push.apply($internalHooks, _toConsumableArray(keys));
 };
 
-/** vue-property-decorator verson 8.4.2 MIT LICENSE copyright 2019 kaorun343 */
+/** vue-property-decorator verson 9.0.0 MIT LICENSE copyright 2020 kaorun343 */
 /** @see {@link https://github.com/vuejs/vue-class-component/blob/master/src/reflect.ts} */
 var reflectMetadataIsSupported = typeof Reflect !== 'undefined' && typeof Reflect.getMetadata !== 'undefined';
 function applyMetadata(options, target, key) {
@@ -857,62 +857,38 @@ var script$5 = {
   }
 };
 
-const isOldIE = typeof navigator !== 'undefined' &&
-    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
-function createInjector(context) {
-    return (id, style) => addStyle(id, style);
-}
-let HEAD;
-const styles = {};
-function addStyle(id, css) {
-    const group = isOldIE ? css.media || 'default' : id;
-    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
-    if (!style.ids.has(id)) {
-        style.ids.add(id);
-        let code = css.source;
-        if (css.map) {
-            // https://developer.chrome.com/devtools/docs/javascript-debugging
-            // this makes source maps inside style tags work properly in Chrome
-            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
-            // http://stackoverflow.com/a/26603875
-            code +=
-                '\n/*# sourceMappingURL=data:application/json;base64,' +
-                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
-                    ' */';
-        }
-        if (!style.element) {
-            style.element = document.createElement('style');
-            style.element.type = 'text/css';
-            if (css.media)
-                style.element.setAttribute('media', css.media);
-            if (HEAD === undefined) {
-                HEAD = document.head || document.getElementsByTagName('head')[0];
-            }
-            HEAD.appendChild(style.element);
-        }
-        if ('styleSheet' in style.element) {
-            style.styles.push(code);
-            style.element.styleSheet.cssText = style.styles
-                .filter(Boolean)
-                .join('\n');
-        }
-        else {
-            const index = style.ids.size - 1;
-            const textNode = document.createTextNode(code);
-            const nodes = style.element.childNodes;
-            if (nodes[index])
-                style.element.removeChild(nodes[index]);
-            if (nodes.length)
-                style.element.insertBefore(textNode, nodes[index]);
-            else
-                style.element.appendChild(textNode);
-        }
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
     }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
 }
+
+var css_248z = "body {\n  font-size: 1rem;\n}";
+styleInject(css_248z);
 
 /* script */
 const __vue_script__$6 = script$5;
-
 /* template */
 var __vue_render__$6 = function() {
   var _vm = this;
@@ -924,17 +900,15 @@ var __vue_staticRenderFns__$6 = [];
 __vue_render__$6._withStripped = true;
 
   /* style */
-  const __vue_inject_styles__$6 = function (inject) {
-    if (!inject) return
-    inject("data-v-c8064b08_0", { source: "body {\n  font-size: 1rem;\n}", map: undefined, media: undefined });
-
-  };
+  const __vue_inject_styles__$6 = undefined;
   /* scoped */
   const __vue_scope_id__$6 = undefined;
   /* module identifier */
   const __vue_module_identifier__$6 = undefined;
   /* functional template */
   const __vue_is_functional_template__$6 = false;
+  /* style inject */
+  
   /* style inject SSR */
   
   /* style inject shadow dom */
@@ -949,7 +923,7 @@ __vue_render__$6._withStripped = true;
     __vue_is_functional_template__$6,
     __vue_module_identifier__$6,
     false,
-    createInjector,
+    undefined,
     undefined,
     undefined
   );
@@ -977,9 +951,11 @@ var script$6 = {
   }
 };
 
+var css_248z$1 = "\nbody {\n  font-size: 1.000001rem;\n}\n";
+styleInject(css_248z$1);
+
 /* script */
 const __vue_script__$7 = script$6;
-
 /* template */
 var __vue_render__$7 = function() {
   var _vm = this;
