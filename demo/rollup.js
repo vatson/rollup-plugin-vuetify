@@ -22,7 +22,7 @@ const build = async () => {
         nodeResolve(),
         commonjs(),
         postcss(),
-        vue(),
+        vue({css: false}),
         typescript({
           lib: ["es5", "es6", "ESNext", "dom"],
           target: "ESNext",
@@ -41,7 +41,7 @@ const build = async () => {
         nodeResolve(),
         commonjs(),
         postcss(),
-        vue(),
+        vue({css: false}),
         typescript2({
           tsconfig: resolve(__dirname, "tsconfig.json"),
         }),
@@ -61,7 +61,7 @@ const build = async () => {
         replace({
           'process.env.NODE_ENV': JSON.stringify('production'),
         }),
-        vue(),
+        vue({css: false}),
         typescript2({
           tsconfig: resolve(__dirname, "tsconfig.json"),
         }),
