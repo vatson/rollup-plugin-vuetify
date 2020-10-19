@@ -25,6 +25,9 @@
   ],
   "author": "Vadim Tiukov <dev.vatson@gmail.com>",
   "license": "MIT",
+  "peerDependencies": {
+    "vue-template-compiler": "^2.6.0"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "15.1.0",
     "@rollup/plugin-node-resolve": "9.0.0",
@@ -35,14 +38,14 @@
     "rollup-plugin-typescript2": "0.27.3",
     "rollup-plugin-vue": "5.1.9",
     "typescript": "3.9.7",
-    "vue": "2.6.11",
+    "vue": "2.6.12",
+    "vue-template-compiler": "2.6.12",
     "vue-class-decorator": "7.6.3",
     "vue-property-decorator": "9.0.0",
     "vuetify": "2.3.14"
   },
   "dependencies": {
     "jscodeshift": "^0.10.0",
-    "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.3"
   }
 }
