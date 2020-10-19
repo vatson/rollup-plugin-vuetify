@@ -11,8 +11,10 @@ This is a must if you decide to write your vuetify-based library.
 Install the plugin with npm:
 
 ```shell
-npm install --save-dev rollup-plugin-vuetify
+npm install --save-dev vue-template-compiler rollup-plugin-vuetify 
 ```
+
+*Note: vue-template-compiler version **must** match your vue version*
 
 ## Configuration
 
