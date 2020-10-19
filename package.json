@@ -41,7 +41,7 @@
     "vue": "2.6.12",
     "vue-template-compiler": "2.6.12",
     "vue-class-decorator": "7.6.3",
-    "vue-property-decorator": "9.0.0",
+    "vue-property-decorator": "9.0.2",
     "vuetify": "2.3.14"
   },
   "dependencies": {
