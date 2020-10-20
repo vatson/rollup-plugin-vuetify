@@ -1,10 +1,12 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('vue')) :
   typeof define === 'function' && define.amd ? define(['vue'], factory) :
-  (global = global || self, factory(global.Vue));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Vue));
 }(this, (function (Vue) { 'use strict';
 
-  Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
+  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  var Vue__default = /*#__PURE__*/_interopDefaultLegacy(Vue);
 
   function styleInject(css, ref) {
     if ( ref === void 0 ) ref = {};
@@ -44,7 +46,7 @@
   }
   /* @vue/component */
 
-  const Themeable = Vue.extend().extend({
+  const Themeable = Vue__default['default'].extend().extend({
     name: 'themeable',
 
     provide() {
@@ -141,7 +143,7 @@
 
   /* eslint-disable max-len, import/export, no-use-before-define */
   function mixins(...args) {
-    return Vue.extend({
+    return Vue__default['default'].extend({
       mixins: args
     });
   }
@@ -219,7 +221,7 @@
     };
   }
 
-  var BindsAttrs = Vue.extend({
+  var BindsAttrs = Vue__default['default'].extend({
     data: () => ({
       attrs$: {},
       listeners$: {}
@@ -238,11 +240,11 @@
 
   });
 
-  function install(Vue$1, args = {}) {
+  function install(Vue, args = {}) {
     if (install.installed) return;
     install.installed = true;
 
-    if (Vue !== Vue$1) {
+    if (Vue__default['default'] !== Vue) {
       consoleError('Multiple instances of Vue detected\nSee https://github.com/vuetifyjs/vuetify/issues/4068\n\nIf you\'re seeing "$attrs is readonly", it\'s caused by this');
     }
 
@@ -251,7 +253,7 @@
 
     for (const name in directives) {
       const directive = directives[name];
-      Vue$1.directive(name, directive);
+      Vue.directive(name, directive);
     }
 
     (function registerComponents(components) {
@@ -260,7 +262,7 @@
           const component = components[key];
 
           if (component && !registerComponents(component.$_vuetify_subcomponents)) {
-            Vue$1.component(key, component);
+            Vue.component(key, component);
           }
         }
 
@@ -273,17 +275,37 @@
     // https://github.com/vuejs/vue/issues/5089#issuecomment-284260111
 
 
-    if (Vue$1.$_vuetify_installed) return;
-    Vue$1.$_vuetify_installed = true;
-    Vue$1.mixin({
+    if (Vue.$_vuetify_installed) return;
+    Vue.$_vuetify_installed = true;
+    Vue.mixin({
       beforeCreate() {
         const options = this.$options;
 
         if (options.vuetify) {
-          options.vuetify.init(this, options.ssrContext);
-          this.$vuetify = Vue$1.observable(options.vuetify.framework);
+          options.vuetify.init(this, this.$ssrContext);
+          this.$vuetify = Vue.observable(options.vuetify.framework);
         } else {
           this.$vuetify = options.parent && options.parent.$vuetify || this;
+        }
+      },
+
+      beforeMount() {
+        // @ts-ignore
+        if (this.$options.vuetify && this.$el && this.$el.hasAttribute('data-server-rendered')) {
+          // @ts-ignore
+          this.$vuetify.isHydrating = true; // @ts-ignore
+
+          this.$vuetify.breakpoint.update(true);
+        }
+      },
+
+      mounted() {
+        // @ts-ignore
+        if (this.$options.vuetify && this.$vuetify.isHydrating) {
+          // @ts-ignore
+          this.$vuetify.isHydrating = false; // @ts-ignore
+
+          this.$vuetify.breakpoint.update();
         }
       }
 
@@ -378,32 +400,23 @@
       this.mobileBreakpoint = mobileBreakpoint;
       this.scrollBarWidth = scrollBarWidth;
       this.thresholds = thresholds;
-      this.init();
     }
 
     init() {
+      this.update();
       /* istanbul ignore if */
+
       if (typeof window === 'undefined') return;
       window.addEventListener('resize', this.onResize.bind(this), {
         passive: true
       });
-      this.update();
-    }
-
-    onResize() {
-      clearTimeout(this.resizeTimeout); // Added debounce to match what
-      // v-resize used to do but was
-      // removed due to a memory leak
-      // https://github.com/vuetifyjs/vuetify/pull/2997
-
-      this.resizeTimeout = window.setTimeout(this.update.bind(this), 200);
     }
     /* eslint-disable-next-line max-statements */
 
 
-    update() {
-      const height = this.getClientHeight();
-      const width = this.getClientWidth();
+    update(ssr = false) {
+      const height = ssr ? 0 : this.getClientHeight();
+      const width = ssr ? 0 : this.getClientWidth();
       const xs = width < this.thresholds.xs;
       const sm = width < this.thresholds.sm && !xs;
       const md = width < this.thresholds.md - this.scrollBarWidth && !(sm || xs);
@@ -465,6 +478,15 @@
       const current = breakpoints[this.name];
       const max = breakpoints[this.mobileBreakpoint];
       this.mobile = current <= max;
+    }
+
+    onResize() {
+      clearTimeout(this.resizeTimeout); // Added debounce to match what
+      // v-resize used to do but was
+      // removed due to a memory leak
+      // https://github.com/vuetifyjs/vuetify/pull/2997
+
+      this.resizeTimeout = window.setTimeout(this.update.bind(this), 200);
     } // Cross-browser support as described in:
     // https://stackoverflow.com/questions/1248081
 
@@ -645,7 +667,7 @@
   Goto.property = 'goTo';
 
   function createSimpleFunctional(c, el = 'div', name) {
-    return Vue.extend({
+    return Vue__default['default'].extend({
       name: name || c.replace(/__/g, '-'),
       functional: true,
 
@@ -1538,7 +1560,7 @@
       super();
       this.disabled = false;
       this.isDark = null;
-      this.vueInstance = null;
+      this.unwatch = null;
       this.vueMeta = null;
       const {
         dark,
@@ -1611,7 +1633,7 @@
         this.initSSR(ssrContext);
       }
 
-      this.initTheme();
+      this.initTheme(root);
     } // Allows for you to set target theme
 
 
@@ -1715,27 +1737,27 @@
       ssrContext.head += `<style type="text/css" id="vuetify-theme-stylesheet"${nonce}>${this.generatedStyles}</style>`;
     }
 
-    initTheme() {
+    initTheme(root) {
       // Only watch for reactivity on client side
       if (typeof document === 'undefined') return; // If we get here somehow, ensure
       // existing instance is removed
 
-      if (this.vueInstance) this.vueInstance.$destroy(); // Use Vue instance to track reactivity
-      // TODO: Update to use RFC if merged
+      if (this.unwatch) {
+        this.unwatch();
+        this.unwatch = null;
+      } // TODO: Update to use RFC if merged
       // https://github.com/vuejs/rfcs/blob/advanced-reactivity-api/active-rfcs/0000-advanced-reactivity-api.md
 
-      this.vueInstance = new Vue({
-        data: {
+
+      root.$once('hook:created', () => {
+        const obs = Vue__default['default'].observable({
           themes: this.themes
-        },
-        watch: {
-          themes: {
-            immediate: true,
-            deep: true,
-            handler: () => this.applyTheme()
-          }
-        }
+        });
+        this.unwatch = root.$watch(() => obs.themes, () => this.applyTheme(), {
+          deep: true
+        });
       });
+      this.applyTheme();
     }
 
     get currentTheme() {
@@ -1785,7 +1807,9 @@
 
   class Vuetify {
     constructor(userPreset = {}) {
-      this.framework = {};
+      this.framework = {
+        isHydrating: false
+      };
       this.installed = [];
       this.preset = {};
       this.userPreset = {};
@@ -1826,7 +1850,7 @@
   }
   Vuetify.install = install;
   Vuetify.installed = false;
-  Vuetify.version = "2.3.4";
+  Vuetify.version = "2.3.14";
   Vuetify.config = {
     silent: false
   };
@@ -1919,7 +1943,7 @@
     }
   }
 
-  var Colorable = Vue.extend({
+  var Colorable = Vue__default['default'].extend({
     name: 'colorable',
     props: {
       color: String
@@ -1991,7 +2015,7 @@
     }
   });
 
-  var Elevatable = Vue.extend({
+  var Elevatable = Vue__default['default'].extend({
     name: 'elevatable',
     props: {
       elevation: [Number, String]
@@ -2014,7 +2038,7 @@
   });
 
   // Helpers
-  var Measurable = Vue.extend({
+  var Measurable = Vue__default['default'].extend({
     name: 'measurable',
     props: {
       height: [Number, String],
@@ -2047,7 +2071,7 @@
 
   /* @vue/component */
 
-  var Roundable = Vue.extend({
+  var Roundable = Vue__default['default'].extend({
     name: 'roundable',
     props: {
       rounded: [Boolean, String],
@@ -2296,24 +2320,29 @@
     if (!target) return source;
     return target ? wrapInArray(target).concat(source) : source;
   }
-  function mergeListeners(target, source) {
-    if (!target) return source;
-    if (!source) return target;
-    let event;
+  function mergeListeners(...args) {
+    if (!args[0]) return args[1];
+    if (!args[1]) return args[0];
+    const dest = {};
 
-    for (event of Object.keys(source)) {
-      // Concat function to array of functions if callback present.
-      if (target[event]) {
-        // Insert current iteration data in beginning of merged array.
-        target[event] = wrapInArray(target[event]);
-        target[event].push(...wrapInArray(source[event]));
-      } else {
-        // Straight assign.
-        target[event] = source[event];
+    for (let i = 2; i--;) {
+      const arg = args[i];
+
+      for (const event in arg) {
+        if (!arg[event]) continue;
+
+        if (dest[event]) {
+          // Merge current listeners before (because we are iterating backwards).
+          // Note that neither "target" or "source" must be altered.
+          dest[event] = [].concat(arg[event], dest[event]);
+        } else {
+          // Straight assign.
+          dest[event] = arg[event];
+        }
       }
     }
 
-    return target;
+    return dest;
   }
 
   function inserted$1(el, binding) {
@@ -2361,7 +2390,7 @@
     top: Boolean
   };
   function factory(selected = []) {
-    return Vue.extend({
+    return Vue__default['default'].extend({
       name: 'positionable',
       props: selected.length ? filterObjectOnKeys(availableProps, selected) : availableProps
     });
@@ -2406,13 +2435,7 @@
     // Explicitly check for false to allow fallback compatibility
     // with non-toggleable components
 
-    if (!e || isActive(e) === false) return; // If click was triggered programmaticaly (domEl.click()) then
-    // it shouldn't be treated as click-outside
-    // Chrome/Firefox support isTrusted property
-    // IE/Edge support pointerType property (empty if not triggered
-    // by pointing device)
-
-    if ('isTrusted' in e && !e.isTrusted || 'pointerType' in e && !e.pointerType) return; // Check if additional elements were passed to be included in check
+    if (!e || isActive(e) === false) return; // Check if additional elements were passed to be included in check
     // (click must be outside all included elements, if any)
 
     const elements = (typeof binding.value === 'object' && binding.value.include || (() => []))(); // Add the root element for the component this directive was defined on
@@ -2802,7 +2825,7 @@
   };
 
   function factory$1(prop = 'value', event = 'input') {
-    return Vue.extend({
+    return Vue__default['default'].extend({
       name: 'toggleable',
       model: {
         prop,
@@ -2836,7 +2859,7 @@
 
   const Toggleable = factory$1();
 
-  var Sizeable = Vue.extend({
+  var Sizeable = Vue__default['default'].extend({
     name: 'sizeable',
     props: {
       large: Boolean,
@@ -2926,9 +2949,9 @@
         return explicitSize && SIZE_MAP[explicitSize] || convertToUnit(this.size);
       },
 
-      // Component data for both font and svg icon.
+      // Component data for both font icon and SVG wrapper span
       getDefaultData() {
-        const data = {
+        return {
           staticClass: 'v-icon notranslate',
           class: {
             'v-icon--disabled': this.disabled,
@@ -2945,7 +2968,19 @@
           },
           on: this.listeners$
         };
-        return data;
+      },
+
+      getSvgWrapperData() {
+        const fontSize = this.getSize();
+        const wrapperData = { ...this.getDefaultData(),
+          style: fontSize ? {
+            fontSize,
+            height: fontSize,
+            width: fontSize
+          } : undefined
+        };
+        this.applyColors(wrapperData);
+        return wrapperData;
       },
 
       applyColors(data) {
@@ -2983,27 +3018,26 @@
       },
 
       renderSvgIcon(icon, h) {
-        const fontSize = this.getSize();
-        const wrapperData = { ...this.getDefaultData(),
-          style: fontSize ? {
-            fontSize,
-            height: fontSize,
-            width: fontSize
-          } : undefined
-        };
-        wrapperData.class['v-icon--svg'] = true;
-        this.applyColors(wrapperData);
         const svgData = {
+          class: 'v-icon__svg',
           attrs: {
             xmlns: 'http://www.w3.org/2000/svg',
             viewBox: '0 0 24 24',
-            height: fontSize || '24',
-            width: fontSize || '24',
             role: 'img',
             'aria-hidden': true
           }
         };
-        return h(this.hasClickListener ? 'button' : 'span', wrapperData, [h('svg', svgData, [h('path', {
+        const size = this.getSize();
+
+        if (size) {
+          svgData.style = {
+            fontSize: size,
+            height: size,
+            width: size
+          };
+        }
+
+        return h(this.hasClickListener ? 'button' : 'span', this.getSvgWrapperData(), [h('svg', svgData, [h('path', {
           attrs: {
             d: icon
           }
@@ -3011,8 +3045,11 @@
       },
 
       renderSvgIconComponent(icon, h) {
-        const data = this.getDefaultData();
-        data.class['v-icon--is-component'] = true;
+        const data = {
+          class: {
+            'v-icon__component': true
+          }
+        };
         const size = this.getSize();
 
         if (size) {
@@ -3027,7 +3064,7 @@
         const component = icon.component;
         data.props = icon.props;
         data.nativeOn = data.on;
-        return h(component, data);
+        return h(this.hasClickListener ? 'button' : 'span', this.getSvgWrapperData(), [h(component, data)]);
       }
 
     },
@@ -3047,7 +3084,7 @@
     }
 
   });
-  var VIcon$1 = Vue.extend({
+  var VIcon$1 = Vue__default['default'].extend({
     name: 'v-icon',
     $_wrapperFor: VIcon,
     functional: true,
@@ -3218,7 +3255,7 @@
       register: generateWarning(child, parent),
       unregister: generateWarning(child, parent)
     } : null;
-    return Vue.extend({
+    return Vue__default['default'].extend({
       name: 'registrable-inject',
       inject: {
         [namespace]: {
@@ -3230,8 +3267,7 @@
 
   // Mixins
   function factory$2(namespace, child, parent) {
-    // TODO: ts 3.4 broke directly returning this
-    const R = inject(namespace, child, parent).extend({
+    return inject(namespace, child, parent).extend({
       name: 'groupable',
       props: {
         activeClass: {
@@ -3277,13 +3313,12 @@
 
       }
     });
-    return R;
   }
   /* eslint-disable-next-line no-redeclare */
 
   const Groupable = factory$2('itemGroup');
 
-  var Routable = Vue.extend({
+  var Routable = Vue__default['default'].extend({
     name: 'routable',
     directives: {
       Ripple
@@ -3323,7 +3358,9 @@
       },
 
       computedRipple() {
-        return this.ripple != null ? this.ripple : !this.disabled && this.isClickable;
+        var _this$ripple;
+
+        return (_this$ripple = this.ripple) != null ? _this$ripple : !this.disabled && this.isClickable;
       },
 
       isClickable() {
@@ -3495,10 +3532,12 @@
       },
 
       computedRipple() {
+        var _this$ripple;
+
         const defaultRipple = this.icon || this.fab ? {
           circle: true
         } : true;
-        if (this.disabled) return false;else return this.ripple != null ? this.ripple : defaultRipple;
+        if (this.disabled) return false;else return (_this$ripple = this.ripple) != null ? _this$ripple : defaultRipple;
       },
 
       isFlat() {
@@ -3572,7 +3611,7 @@
 
   });
 
-  var Transitionable = Vue.extend({
+  var Transitionable = Vue__default['default'].extend({
     name: 'transitionable',
     props: {
       mode: String,
@@ -3758,6 +3797,7 @@
           attrs: {
             role: 'alert'
           },
+          on: this.listeners$,
           class: this.classes,
           style: this.styles,
           directives: [{
@@ -3887,7 +3927,6 @@
         el._parent = el.parentNode;
         el._initialStyle = {
           transition: el.style.transition,
-          visibility: el.style.visibility,
           overflow: el.style.overflow,
           [sizeProperty]: el.style[sizeProperty]
         };
@@ -3895,11 +3934,10 @@
 
       enter(el) {
         const initialStyle = el._initialStyle;
-        const offset = `${el[offsetProperty]}px`;
-        el.style.setProperty('transition', 'none', 'important');
-        el.style.visibility = 'hidden';
-        el.style.visibility = initialStyle.visibility;
+        el.style.setProperty('transition', 'none', 'important'); // Hide overflow to account for collapsed margins in the calculated height
+
         el.style.overflow = 'hidden';
+        const offset = `${el[offsetProperty]}px`;
         el.style[sizeProperty] = '0';
         void el.offsetHeight; // force reflow
 
@@ -3920,7 +3958,6 @@
       leave(el) {
         el._initialStyle = {
           transition: '',
-          visibility: '',
           overflow: el.style.overflow,
           [sizeProperty]: el.style[sizeProperty]
         };
@@ -4139,7 +4176,7 @@
    * Changes the open or close delay time for elements
    */
 
-  var Delayable = Vue.extend().extend({
+  var Delayable = Vue__default['default'].extend().extend({
     name: 'delayable',
     props: {
       openDelay: {
@@ -4447,7 +4484,7 @@
 
   /* @vue/component */
 
-  var Bootable = Vue.extend().extend({
+  var Bootable = Vue__default['default'].extend().extend({
     name: 'bootable',
     props: {
       eager: Boolean
@@ -4603,7 +4640,7 @@
 
   /* @vue/component */
 
-  var Stackable = Vue.extend().extend({
+  var Stackable = Vue__default['default'].extend().extend({
     name: 'stackable',
 
     data() {
@@ -5005,7 +5042,7 @@
 
   /* @vue/component */
 
-  var Returnable = Vue.extend({
+  var Returnable = Vue__default['default'].extend({
     name: 'returnable',
     props: {
       returnValue: null
@@ -5464,7 +5501,7 @@
 
   });
 
-  var VSimpleCheckbox = Vue.extend({
+  var VSimpleCheckbox = Vue__default['default'].extend({
     name: 'v-simple-checkbox',
     functional: true,
     directives: {
@@ -5526,9 +5563,9 @@
         'v-simple-checkbox': true,
         'v-simple-checkbox--disabled': props.disabled
       };
-      return h('div', { ...data,
+      return h('div', mergeData(data, {
         class: classes,
-        on: mergeListeners({
+        on: {
           click: e => {
             e.stopPropagation();
 
@@ -5536,8 +5573,8 @@
               wrapInArray(data.on.input).forEach(f => f(!props.value));
             }
           }
-        }, listeners)
-      }, children);
+        }
+      }), children);
     }
 
   });
@@ -5824,7 +5861,7 @@
   });
 
   function factory$3(prop = 'value', event = 'change') {
-    return Vue.extend({
+    return Vue__default['default'].extend({
       name: 'proxyable',
       model: {
         prop,
@@ -5871,7 +5908,7 @@
   // Types
   /* @vue/component */
 
-  var VListItemAction = Vue.extend({
+  var VListItemAction = Vue__default['default'].extend({
     name: 'v-list-item-action',
     functional: true,
 
@@ -6039,8 +6076,8 @@
         const searchInput = (this.searchInput || '').toString().toLocaleLowerCase();
         const index = text.toLocaleLowerCase().indexOf(searchInput);
         if (index < 0) return {
-          start: '',
-          middle: text,
+          start: text,
+          middle: '',
           end: ''
         };
         const start = text.slice(0, index);
@@ -6410,9 +6447,9 @@
       validationTarget() {
         if (this.internalErrorMessages.length > 0) {
           return this.internalErrorMessages;
-        } else if (this.successMessages.length > 0) {
+        } else if (this.successMessages && this.successMessages.length > 0) {
           return this.internalSuccessMessages;
-        } else if (this.messages.length > 0) {
+        } else if (this.messages && this.messages.length > 0) {
           return this.internalMessages;
         } else if (this.shouldValidate) {
           return this.errorBucket;
@@ -6830,12 +6867,12 @@
   function intersectable(options) {
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
       // do nothing because intersection observer is not available
-      return Vue.extend({
+      return Vue__default['default'].extend({
         name: 'intersectable'
       });
     }
 
-    return Vue.extend({
+    return Vue__default['default'].extend({
       name: 'intersectable',
 
       mounted() {
@@ -7105,7 +7142,7 @@
 
   /* @vue/component */
 
-  var Loadable = Vue.extend().extend({
+  var Loadable = Vue__default['default'].extend().extend({
     name: 'loadable',
     props: {
       loading: {
@@ -7135,7 +7172,7 @@
 
   // Styles
   const baseMixins$8 = mixins(VInput, intersectable({
-    onVisible: ['setLabelWidth', 'setPrefixWidth', 'setPrependWidth', 'tryAutofocus']
+    onVisible: ['onResize', 'tryAutofocus']
   }), Loadable);
   const dirtyTypes = ['color', 'file', 'time', 'date', 'datetime-local', 'week', 'month'];
   /* @vue/component */
@@ -7143,6 +7180,7 @@
   var VTextField = baseMixins$8.extend().extend({
     name: 'v-text-field',
     directives: {
+      resize: Resize,
       ripple: Ripple
     },
     inheritAttrs: false,
@@ -7241,7 +7279,9 @@
       },
 
       isDirty() {
-        return this.lazyValue != null && this.lazyValue.toString().length > 0 || this.badInput;
+        var _this$lazyValue;
+
+        return ((_this$lazyValue = this.lazyValue) == null ? void 0 : _this$lazyValue.toString().length) > 0 || this.badInput;
       },
 
       isEnclosed() {
@@ -7283,7 +7323,7 @@
 
     },
     watch: {
-      labelValue: 'setLabelWidth',
+      // labelValue: 'setLabelWidth', // moved to mounted, see #11533
       outlined: 'setLabelWidth',
 
       label() {
@@ -7322,10 +7362,9 @@
     },
 
     mounted() {
+      // #11533
+      this.$watch(() => this.labelValue, this.setLabelWidth);
       this.autofocus && this.tryAutofocus();
-      this.setLabelWidth();
-      this.setPrefixWidth();
-      this.setPrependWidth();
       requestAnimationFrame(() => this.isBooted = true);
     },
 
@@ -7493,7 +7532,14 @@
             focus: this.onFocus,
             keydown: this.onKeyDown
           }),
-          ref: 'input'
+          ref: 'input',
+          directives: [{
+            name: 'resize',
+            modifiers: {
+              quiet: true
+            },
+            value: this.onResize
+          }]
         });
       },
 
@@ -7598,12 +7644,18 @@
         } else if (this.initialValue !== this.lazyValue) {
           this.$emit('change', this.lazyValue);
         }
+      },
+
+      onResize() {
+        this.setLabelWidth();
+        this.setPrefixWidth();
+        this.setPrependWidth();
       }
 
     }
   });
 
-  var Comparable = Vue.extend({
+  var Comparable = Vue__default['default'].extend({
     name: 'comparable',
     props: {
       valueComparator: {
@@ -7615,7 +7667,7 @@
 
   /* @vue/component */
 
-  var Filterable = Vue.extend({
+  var Filterable = Vue__default['default'].extend({
     name: 'filterable',
     props: {
       noDataText: {
@@ -7634,7 +7686,7 @@
     maxHeight: 304
   }; // Types
 
-  const baseMixins$9 = mixins(VTextField, Comparable, Filterable);
+  const baseMixins$9 = mixins(VTextField, Comparable, Dependent, Filterable);
   /* @vue/component */
 
   var VSelect = baseMixins$9.extend().extend({
@@ -7739,7 +7791,8 @@
           name: 'click-outside',
           value: {
             handler: this.blur,
-            closeConditional: this.closeConditional
+            closeConditional: this.closeConditional,
+            include: () => this.getOpenDependentElements()
           }
         }] : undefined;
       },
@@ -8244,10 +8297,7 @@
           // and the target is itself
           // or inside, toggle menu
           if (this.isAppendInner(e.target)) {
-            this.$nextTick(() => this.isMenuActive = !this.isMenuActive); // If user is clicking in the container
-            // and field is enclosed, activate it
-          } else if (this.isEnclosed) {
-            this.isMenuActive = true;
+            this.$nextTick(() => this.isMenuActive = !this.isMenuActive);
           }
         }
 
@@ -8376,7 +8426,7 @@
   // Types
   function VGrid(name) {
     /* @vue/component */
-    return Vue.extend({
+    return Vue__default['default'].extend({
       name: `v-${name}`,
       functional: true,
       props: {
@@ -8896,7 +8946,7 @@
 
 
     var superProto = Object.getPrototypeOf(Component.prototype);
-    var Super = superProto instanceof Vue ? superProto.constructor : Vue;
+    var Super = superProto instanceof Vue__default['default'] ? superProto.constructor : Vue__default['default'];
     var Extended = Super.extend(options);
     forwardStaticMembers(Extended, Component, Super);
 
@@ -8969,7 +9019,7 @@
     $internalHooks.push.apply($internalHooks, _toConsumableArray(keys));
   };
 
-  /** vue-property-decorator verson 9.0.0 MIT LICENSE copyright 2020 kaorun343 */
+  /** vue-property-decorator verson 9.0.2 MIT LICENSE copyright 2020 kaorun343 */
   /** @see {@link https://github.com/vuejs/vue-class-component/blob/master/src/reflect.ts} */
   var reflectMetadataIsSupported = typeof Reflect !== 'undefined' && typeof Reflect.getMetadata !== 'undefined';
   function applyMetadata(options, target, key) {
@@ -9021,7 +9071,7 @@
           })
       ], default_1);
       return default_1;
-  }(Vue));
+  }(Vue__default['default']));
 
   /* script */
   const __vue_script__$1 = default_1;
@@ -9183,7 +9233,7 @@
           Component
       ], default_1);
       return default_1;
-  }(Vue));
+  }(Vue__default['default']));
 
   /* script */
   const __vue_script__$3 = default_1$1;
@@ -9235,7 +9285,7 @@
       undefined
     );
 
-  const ExportByReference = Vue.extend({
+  const ExportByReference = Vue__default['default'].extend({
     components: {
       VChip: VChip
     },
@@ -9285,7 +9335,7 @@
       undefined
     );
 
-  var script$2 = Vue.extend({
+  var script$2 = Vue__default['default'].extend({
       components: {
           VFlex: VFlex,
           VChip: VChip
@@ -9658,9 +9708,9 @@
       undefined
     );
 
-  Vue.use(Vuetify);
+  Vue__default['default'].use(Vuetify);
 
-  new Vue({
+  new Vue__default['default']({
     el: "#app",
     vuetify: new Vuetify(),
     render: h => h(__vue_component__$a),
