@@ -486,7 +486,7 @@ Component.registerHooks = function registerHooks(keys) {
   $internalHooks.push.apply($internalHooks, _toConsumableArray(keys));
 };
 
-/** vue-property-decorator verson 9.0.0 MIT LICENSE copyright 2020 kaorun343 */
+/** vue-property-decorator verson 9.0.2 MIT LICENSE copyright 2020 kaorun343 */
 /** @see {@link https://github.com/vuejs/vue-class-component/blob/master/src/reflect.ts} */
 var reflectMetadataIsSupported = typeof Reflect !== 'undefined' && typeof Reflect.getMetadata !== 'undefined';
 function applyMetadata(options, target, key) {

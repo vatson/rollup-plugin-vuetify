@@ -1,5 +1,24 @@
 # rollup-plugin-vuetify
 
+<p>
+  <a href="https://www.npmjs.org/package/rollup-plugin-vuetify">
+    <img src="https://img.shields.io/npm/v/rollup-plugin-vuetify.svg">
+  </a>
+  <a href="https://npmcharts.com/compare/rollup-plugin-vuetify?minimal=true">
+    <img src="https://img.shields.io/npm/dm/rollup-plugin-vuetify.svg">
+  </a>
+  <a href="https://www.npmjs.org/package/rollup-plugin-vuetify">
+    <img src="https://img.shields.io/david/vatson/rollup-plugin-vuetify">
+  </a>  
+  <br />
+  <a href="https://github.com/vatson/rollup-plugin-vuetify/issues">
+    <img src="https://img.shields.io/github/issues/vatson/rollup-plugin-vuetify">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-yellow.svg">
+  </a>
+</p>
+
 The plugin is a missing autoloader of vuetify components.
 
 It eliminates the pain of manually importing all of the Vuetify components you use. It also allows you to use tree shaking as efficiently as possible.
@@ -11,8 +30,10 @@ This is a must if you decide to write your vuetify-based library.
 Install the plugin with npm:
 
 ```shell
-npm install --save-dev rollup-plugin-vuetify
+npm install --save-dev vue-template-compiler rollup-plugin-vuetify 
 ```
+
+*Note: vue-template-compiler version **must** match your vue version*
 
 ## Configuration
 
