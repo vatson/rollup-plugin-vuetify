@@ -3,7 +3,6 @@ const load = require("./load");
 const extract = require("./extract");
 const transform = require("./transform");
 
-
 const extractAndTransform = (code, template = "") => {
   if (typeof template !== "string" || !template.trim()) {
     return code;
