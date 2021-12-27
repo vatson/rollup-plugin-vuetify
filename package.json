@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-vuetify",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A-la-carte (treeshaking) for you vuetify",
   "main": "src/plugin.js",
   "scripts": {
@@ -33,19 +33,20 @@
     "@rollup/plugin-node-resolve": "9.0.0",
     "@rollup/plugin-replace": "2.3.3",
     "@rollup/plugin-typescript": "3.1.1",
+    "rollup-pluginutils": "^2.8.2",
     "rollup": "2.32.0",
     "rollup-plugin-postcss": "3.1.8",
     "rollup-plugin-typescript2": "0.28.0",
     "rollup-plugin-vue": "5.1.9",
     "typescript": "4.0.3",
-    "vue": "2.6.12",
+    "vue": "2.6.14",
     "vue-template-compiler": "2.6.12",
     "vue-class-decorator": "7.6.3",
     "vue-property-decorator": "9.0.2",
-    "vuetify": "2.3.14"
+    "vuetify": "^2.4.4"
   },
   "dependencies": {
     "jscodeshift": "^0.11.0",
-    "vuetify-loader": "^1.4.3"
+    "vuetify-loader": "^1.7.2"
   }
 }
