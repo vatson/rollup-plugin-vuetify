@@ -50,7 +50,11 @@ const build = async () => {
     const bundle = await rollup({
       input: "src/index.js",
       external: ["vue", "vuetify/lib"],
-      plugins: [postcss(), vue(), vuetify()],
+      plugins: [
+        postcss(), 
+        vue(), 
+        vuetify({ include: 'src/**', exclude: 'someFolder/**' }/* options are optional */) 
+      ],
     });
 
     bundle.write({
