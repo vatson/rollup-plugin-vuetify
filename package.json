@@ -42,7 +42,7 @@
     "vue": "2.6.14",
     "vue-template-compiler": "2.6.12",
     "vue-class-decorator": "7.6.3",
-    "vue-property-decorator": "9.0.2",
+    "vue-property-decorator": "9.1.2",
     "vuetify": "^2.4.4"
   },
   "dependencies": {
