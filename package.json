@@ -43,7 +43,7 @@
     "vue-template-compiler": "2.6.12",
     "vue-class-decorator": "7.6.3",
     "vue-property-decorator": "9.0.2",
-    "vuetify": "^2.4.4"
+    "vuetify": "2.6.10"
   },
   "dependencies": {
     "jscodeshift": "^0.11.0",
