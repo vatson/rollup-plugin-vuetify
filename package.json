@@ -46,7 +46,7 @@
     "vuetify": "^2.4.4"
   },
   "dependencies": {
-    "jscodeshift": "^0.11.0",
+    "jscodeshift": "^0.15.0",
     "vuetify-loader": "^1.7.2"
   }
 }
